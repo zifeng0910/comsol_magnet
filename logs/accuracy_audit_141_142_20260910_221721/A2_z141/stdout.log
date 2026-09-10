@@ -1,0 +1,41 @@
+CONFIG source=H:\comsolcc\z120_xsphere26_air200_mesh1.mph z=141 profile=A2
+REMOVED_COMMON tag=rot1 type=RotatingDomain
+MESH_DONE elements=60997
+INITIAL_FIELD_SOLVED sol=sol1
+SOLVER sol=sol1 parent=s1 type=Stationary
+  CHILD tag=dDef type=Direct
+    linsolver=mumps
+  CHILD tag=aDef type=Advanced
+  CHILD tag=fc1 type=FullyCoupled
+    linsolver=i1
+  CHILD tag=i1 type=Iterative
+    linsolver=gmres
+SOLVER sol=sol2 parent=t1 type=Time
+  CHILD tag=dDef type=Direct
+    linsolver=mumps
+  CHILD tag=aDef type=Advanced
+  CHILD tag=fc1 type=FullyCoupled
+    linsolver=i1
+  CHILD tag=i1 type=Iterative
+    linsolver=gmres
+DIRECT_ENABLED sol=sol1 parent=s1 node=dDef linsolver=pardiso
+DIRECT_ENABLED sol=sol2 parent=t1 node=dDef linsolver=pardiso
+RTOL_SET_FAILED sol=sol1 parent=s1 message=Unknown_property
+RTOL_SET sol=sol2 parent=t1 rtol=1e-6
+SOLVER sol=sol1 parent=s1 type=Stationary
+  CHILD tag=dDef type=Direct
+    linsolver=pardiso
+  CHILD tag=aDef type=Advanced
+  CHILD tag=fc1 type=FullyCoupled
+    linsolver=dDef
+  CHILD tag=i1 type=Iterative
+    linsolver=gmres
+SOLVER sol=sol2 parent=t1 type=Time
+  CHILD tag=dDef type=Direct
+    linsolver=pardiso
+  CHILD tag=aDef type=Advanced
+  CHILD tag=fc1 type=FullyCoupled
+    linsolver=dDef
+  CHILD tag=i1 type=Iterative
+    linsolver=gmres
+CONFIGURED_SAVED
