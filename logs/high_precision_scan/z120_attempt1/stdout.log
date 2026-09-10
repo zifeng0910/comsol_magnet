@@ -1,0 +1,5 @@
+COMMON rot1 RotatingDomain
+MESH_FEATURE size MeshSizeDefault
+MESH_FEATURE nearfieldfine Size
+MESH_FEATURE ftet1 FreeTet
+MESH_DONE elements=60908

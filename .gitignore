@@ -1,0 +1,10 @@
+# COMSOL binary models and lock files
+*.mph
+*.mph.lock
+*.class
+*.jar
+
+# Local runtime/cache files
+*.tmp
+*.bak
+Thumbs.db
