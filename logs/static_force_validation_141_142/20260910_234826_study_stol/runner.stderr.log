@@ -1,0 +1,37 @@
+Exception:
+	com.comsol.util.exceptions.FlException: 以下特征遇到问题：
+Messages:
+	以下特征遇到问题：
+	- 特征: 稳态求解器 1 (sol1/s1)
+
+	找不到解。
+
+	相对误差 (0.0014) 大于相对容差。
+
+	线性求解器有 1 条警告消息。
+
+	已触发迭代求精。
+
+	返回的解不收敛。
+
+	没有返回所有参数步长。
+
+Stack trace:
+at com.comsol.solver.SolverOperation.execute(SourceFile:398)
+	at com.comsol.solver.SolverOperation.addError(SourceFile:593)
+	at com.comsol.solver.SolverOperation.execute(SourceFile:410)
+	at com.comsol.model.method.SolverSequenceMethod.doRun(SourceFile:2395)
+	at com.comsol.model.method.SolverSequenceMethod.doRunAll(SourceFile:3165)
+	at com.comsol.model.dbmodel.SolverSequenceDb.runAll(SourceFile:312)
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at com.comsol.bridge.command.b.a(SourceFile:161)
+	at com.comsol.bridge.command.b.run(SourceFile:103)
+	at com.comsol.bridge.command.k.c(SourceFile:219)
+	at com.comsol.bridge.command.k$1.run(SourceFile:94)
+	at com.comsol.util.thread.SuspendableTasks$1.run(SourceFile:111)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)

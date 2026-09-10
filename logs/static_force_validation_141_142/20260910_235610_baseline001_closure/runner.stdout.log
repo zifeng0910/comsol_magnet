@@ -1,0 +1,50 @@
+SOURCE=H:\comsolcc\z120_xsphere26_air200_mesh1.mph
+PHYSICS=[mfnc]
+PARAM z_sphere=120[mm] x_sphere=26[mm] alpha=30[deg]
+PARAM omega=10*pi [rad/s] T_cycle=0.2[s]
+REMOVED_COMMON tag=rot1 type=RotatingDomain reason=static_fixed_geometry_branch
+GEOM_MESH_DONE z=141.0 elements=60997
+MFC2_DOMAIN_SELECTION=[4]
+FORCECAL_DOMAIN_SELECTION=[3]
+MATERIALS=[mat4, mat3, mat5]
+GEOMETRY_MEASURE_WARNING=No_entity_dimension_specified
+POSE phi_deg=360.000000000 expected_unit_magnetization=[0.500000000000,0.866025403784,2.12115047745e-16]
+STATIONARY_TOL study=st_z141p000_p360p000.stat usestol=on stol=0.01
+SOLVER_CONFIG sol=sol1 s1.control=stat fc1.linsolver=dDef dDef.linsolver=pardiso
+CONFIGURED_SAVED z=141.0 phi=360.0 study=st_z141p000_p360p000 sol=sol1
+SOLVED z=141.0 phi=360.0 sol=sol1
+RESULT 141.00000000,360.00000000,[0.500000000000,0.866025403784,2.12115047745e-16],sol1,pardiso,stol=0.01,60997,NA,-0.000731204179490,-0.731204179490,-0.731204179490,SUCCESS,UNKNOWN,UNKNOWN
+GEOM_MESH_DONE z=142.0 elements=60847
+MFC2_DOMAIN_SELECTION=[4]
+FORCECAL_DOMAIN_SELECTION=[3]
+MATERIALS=[mat4, mat3, mat5]
+GEOMETRY_MEASURE_WARNING=No_entity_dimension_specified
+POSE phi_deg=360.000000000 expected_unit_magnetization=[0.500000000000,0.866025403784,2.12115047745e-16]
+STATIONARY_TOL study=st_z142p000_p360p000.stat usestol=on stol=0.01
+SOLVER_CONFIG sol=sol2 s1.control=stat fc1.linsolver=dDef dDef.linsolver=pardiso
+CONFIGURED_SAVED z=142.0 phi=360.0 study=st_z142p000_p360p000 sol=sol2
+SOLVED z=142.0 phi=360.0 sol=sol2
+RESULT 142.00000000,360.00000000,[0.500000000000,0.866025403784,2.12115047745e-16],sol2,pardiso,stol=0.01,60847,NA,0.000431514139035,0.431514139035,0.431514139035,SUCCESS,UNKNOWN,UNKNOWN
+GEOM_MESH_DONE z=141.0 elements=60997
+MFC2_DOMAIN_SELECTION=[4]
+FORCECAL_DOMAIN_SELECTION=[3]
+MATERIALS=[mat4, mat3, mat5]
+GEOMETRY_MEASURE_WARNING=No_entity_dimension_specified
+POSE phi_deg=0.00000000000 expected_unit_magnetization=[0.500000000000,0.866025403784,-0.00000000000]
+STATIONARY_TOL study=st_z141p000_p0p00000.stat usestol=on stol=0.01
+SOLVER_CONFIG sol=sol3 s1.control=stat fc1.linsolver=dDef dDef.linsolver=pardiso
+CONFIGURED_SAVED z=141.0 phi=0.0 study=st_z141p000_p0p00000 sol=sol3
+SOLVED z=141.0 phi=0.0 sol=sol3
+RESULT 141.00000000,0.00000000,[0.500000000000,0.866025403784,-0.00000000000],sol3,pardiso,stol=0.01,60997,NA,-0.000731204179472,-0.731204179472,-0.731204179472,SUCCESS,UNKNOWN,UNKNOWN
+GEOM_MESH_DONE z=142.0 elements=60847
+MFC2_DOMAIN_SELECTION=[4]
+FORCECAL_DOMAIN_SELECTION=[3]
+MATERIALS=[mat4, mat3, mat5]
+GEOMETRY_MEASURE_WARNING=No_entity_dimension_specified
+POSE phi_deg=0.00000000000 expected_unit_magnetization=[0.500000000000,0.866025403784,-0.00000000000]
+STATIONARY_TOL study=st_z142p000_p0p00000.stat usestol=on stol=0.01
+SOLVER_CONFIG sol=sol4 s1.control=stat fc1.linsolver=dDef dDef.linsolver=pardiso
+CONFIGURED_SAVED z=142.0 phi=0.0 study=st_z142p000_p0p00000 sol=sol4
+SOLVED z=142.0 phi=0.0 sol=sol4
+RESULT 142.00000000,0.00000000,[0.500000000000,0.866025403784,-0.00000000000],sol4,pardiso,stol=0.01,60847,NA,0.000431514139038,0.431514139038,0.431514139038,SUCCESS,UNKNOWN,UNKNOWN
+FINISH results=H:\comsolcc\static_force_validation\141_142\20260910_235610_baseline001_closure\static_force_results.csv
