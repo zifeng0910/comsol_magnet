@@ -62,3 +62,18 @@ Model B 尚未启动。它必须在 Model A 的 gap=0.30 mm Holding baseline 通
 ## 下一步建议
 
 先不要启动旋转磁球高度/角度扫描。应在 gap=0.30 mm 上固定绝对近场网格和合法闭合力积分，对 `h≈0.03` 与 `h≈0.02` 的净力继续做独立力方法核对；只有净力变化明显小于目标量级后，才把该值用于 Model B 的 `DeltaFx_drive` 和释放候选判定。
+
+## gap=0.30 mm：表面力与体积力变量交叉核验
+
+本次新增验证没有修改原六点扫描 CSV 或既有 MPH。脚本对两个独立模型副本分别重新求解，并用最终几何包围盒核验圆柱域为域 3：
+
+| mesh level | h (mm) | Fx_surface (mN) | Fx_volume (mN) | relative_diff | elements | DOF | status |
+|---|---:|---:|---:|---:|---:|---:|---|
+| M_h003 | 0.030 | -0.375970317180 | unavailable | unavailable | 194131 | 259754 | NO_VALID_VOLUME_FORCE_VARIABLE |
+| M_h002 | 0.020 | -0.225873547613 | unavailable | unavailable | 423088 | 565385 | NO_VALID_VOLUME_FORCE_VARIABLE |
+
+实际试探并失败的候选变量包括：`mfnc.FLtzx/y/z`、`mfnc.ForceDensityx/y/z`、`mfnc.fex/y/z`、`mfnc.fLx/y/z`。COMSOL 6.3 文档将 `FLtz` 定义为 `J×B` 洛伦兹力密度，适用于载流导体；同时说明对于永磁体和磁性材料，精确体积力分布通常不可直接获得，通用总力应使用 Maxwell 应力或虚功法。因此不能把这些不存在或无法求值的变量填成 0，也不能把 Kelvin 表达式未经材料本构验证就作为独立总力。
+
+本次结论是：两种方法没有得到可比较的 `Fx_volume`，所以 `relative_diff` 不适用，不能据此判断表面法和体积法吻合或不吻合。已确认的数值事实仍是表面法端点加密后变化约 40%，下一步应采用合法空气闭合包络面的 COMSOL 原生 Maxwell 积分或经过本构确认的虚功/能量法，而不是继续猜测体积力变量。
+
+交叉核验文件：[gap030_surface_vs_volume_crosscheck.csv](../data/gap030_surface_vs_volume_crosscheck.csv)；脚本：[RunGap030SurfaceVolumeCrosscheck.java](../scripts/RunGap030SurfaceVolumeCrosscheck.java)。

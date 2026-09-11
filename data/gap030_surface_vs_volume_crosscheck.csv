@@ -1,0 +1,3 @@
+gap_mm,mesh_level,h_gap_mm,domain_cylinder,Fx_surface_mN,Fx_volume_mN,relative_diff,mesh_elements,DOF,volume_expression,status
+0.30,M_h003,0.0300000000000,3,-0.375970317180,,,194131,259754,,NO_VALID_VOLUME_FORCE_VARIABLE
+0.30,M_h002,0.0200000000000,3,-0.225873547613,,,423088,565385,,NO_VALID_VOLUME_FORCE_VARIABLE
