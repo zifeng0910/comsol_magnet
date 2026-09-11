@@ -1,0 +1,280 @@
+REMOVED_ROTATING_DOMAIN=rot1
+START ModelB source=H:\comsolcc\z120_xsphere26_air200_mesh1.mph heights=[110.0, 100.0, 90.0, 80.0] phis=[0.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0, 315.0, 360.0]
+HEIGHT_START z=110.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 85.0, 135.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_SET point=20
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=110.000000000_119204991832000 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=110.000000000 sol=sol1
+SOLVE_DONE B0 z=110.000000000 sol=sol1
+B0_RESULT z=110.000000000 Fx=0.713491912637mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=110.000000000_119212094830600 sol=sol2 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=110.000000000 sol=sol2
+SOLVE_DONE B1 z=110.000000000 sol=sol2
+B1_RESULT z=110.000000000 Fx=0.588999251111mN hold_corr=-0.124492661526mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=0.00000000000_119216592613500 sol=sol3 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=0.00000000000 sol=sol3
+SOLVE_DONE B2 z=110.000000000 phi=0.00000000000 sol=sol3
+B2_RESULT z=110.000000000 phi=0.00000000000 Fx_raw=0.535737286053 Fx_total_corr=-0.177754626583 DeltaFx_ball=-0.0532619650573mN
+POSE phi_deg=45.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=45.0000000000_119220857470600 sol=sol4 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=45.0000000000 sol=sol4
+SOLVE_DONE B2 z=110.000000000 phi=45.0000000000 sol=sol4
+B2_RESULT z=110.000000000 phi=45.0000000000 Fx_raw=0.593777299144 Fx_total_corr=-0.119714613493 DeltaFx_ball=0.00477804803336mN
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=90.0000000000_119224983152900 sol=sol5 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=90.0000000000 sol=sol5
+SOLVE_DONE B2 z=110.000000000 phi=90.0000000000 sol=sol5
+B2_RESULT z=110.000000000 phi=90.0000000000 Fx_raw=0.617747439097 Fx_total_corr=-0.0957444735396 DeltaFx_ball=0.0287481879865mN
+POSE phi_deg=135.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=135.000000000_119228861524300 sol=sol6 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=135.000000000 sol=sol6
+SOLVE_DONE B2 z=110.000000000 phi=135.000000000 sol=sol6
+B2_RESULT z=110.000000000 phi=135.000000000 Fx_raw=0.593599944244 Fx_total_corr=-0.119891968393 DeltaFx_ball=0.00460069313361mN
+POSE phi_deg=180.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=180.000000000_119232384068900 sol=sol7 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=180.000000000 sol=sol7
+SOLVE_DONE B2 z=110.000000000 phi=180.000000000 sol=sol7
+B2_RESULT z=110.000000000 phi=180.000000000 Fx_raw=0.535487201001 Fx_total_corr=-0.178004711636 DeltaFx_ball=-0.0535120501099mN
+POSE phi_deg=225.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=225.000000000_119235953680300 sol=sol8 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=225.000000000 sol=sol8
+SOLVE_DONE B2 z=110.000000000 phi=225.000000000 sol=sol8
+B2_RESULT z=110.000000000 phi=225.000000000 Fx_raw=0.477457245090 Fx_total_corr=-0.236034667547 DeltaFx_ball=-0.111542006021mN
+POSE phi_deg=270.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=270.000000000_119239464187800 sol=sol9 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=270.000000000 sol=sol9
+SOLVE_DONE B2 z=110.000000000 phi=270.000000000 sol=sol9
+B2_RESULT z=110.000000000 phi=270.000000000 Fx_raw=0.453496126091 Fx_total_corr=-0.259995786546 DeltaFx_ball=-0.135503125020mN
+POSE phi_deg=315.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=315.000000000_119243006008600 sol=sol10 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=315.000000000 sol=sol10
+SOLVE_DONE B2 z=110.000000000 phi=315.000000000 sol=sol10
+B2_RESULT z=110.000000000 phi=315.000000000 Fx_raw=0.477633563822 Fx_total_corr=-0.235858348815 DeltaFx_ball=-0.111365687289mN
+POSE phi_deg=360.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=360.000000000_119246511571700 sol=sol11 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=360.000000000 sol=sol11
+SOLVE_DONE B2 z=110.000000000 phi=360.000000000 sol=sol11
+B2_RESULT z=110.000000000 phi=360.000000000 Fx_raw=0.535737286086 Fx_total_corr=-0.177754626551 DeltaFx_ball=-0.0532619650244mN
+CHECKPOINT_SAVED z=110.000000000
+HEIGHT_START z=100.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 75.0, 125.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=100.000000000_119252579198500 sol=sol12 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=100.000000000 sol=sol12
+SOLVE_DONE B0 z=100.000000000 sol=sol12
+B0_RESULT z=100.000000000 Fx=0.477937003482mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=100.000000000_119256589566500 sol=sol13 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=100.000000000 sol=sol13
+SOLVE_DONE B1 z=100.000000000 sol=sol13
+B1_RESULT z=100.000000000 Fx=0.353557228807mN hold_corr=-0.124379774675mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=0.00000000000_119260437544600 sol=sol14 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=0.00000000000 sol=sol14
+SOLVE_DONE B2 z=100.000000000 phi=0.00000000000 sol=sol14
+B2_RESULT z=100.000000000 phi=0.00000000000 Fx_raw=0.265554463900 Fx_total_corr=-0.212382539583 DeltaFx_ball=-0.0880027649076mN
+POSE phi_deg=45.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=45.0000000000_119264267315400 sol=sol15 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=45.0000000000 sol=sol15
+SOLVE_DONE B2 z=100.000000000 phi=45.0000000000 sol=sol15
+B2_RESULT z=100.000000000 phi=45.0000000000 Fx_raw=0.336606648797 Fx_total_corr=-0.141330354685 DeltaFx_ball=-0.0169505800101mN
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=90.0000000000_119268003162700 sol=sol16 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=90.0000000000 sol=sol16
+SOLVE_DONE B2 z=100.000000000 phi=90.0000000000 sol=sol16
+B2_RESULT z=100.000000000 phi=90.0000000000 Fx_raw=0.365946124629 Fx_total_corr=-0.111990878853 DeltaFx_ball=0.0123888958222mN
+POSE phi_deg=135.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=135.000000000_119271803752500 sol=sol17 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=135.000000000 sol=sol17
+SOLVE_DONE B2 z=100.000000000 phi=135.000000000 sol=sol17
+B2_RESULT z=100.000000000 phi=135.000000000 Fx_raw=0.336369105167 Fx_total_corr=-0.141567898316 DeltaFx_ball=-0.0171881236405mN
+POSE phi_deg=180.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=180.000000000_119275684588600 sol=sol18 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=180.000000000 sol=sol18
+SOLVE_DONE B2 z=100.000000000 phi=180.000000000 sol=sol18
+B2_RESULT z=100.000000000 phi=180.000000000 Fx_raw=0.265219295628 Fx_total_corr=-0.212717707854 DeltaFx_ball=-0.0883379331788mN
+POSE phi_deg=225.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=225.000000000_119279561515500 sol=sol19 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=225.000000000 sol=sol19
+SOLVE_DONE B2 z=100.000000000 phi=225.000000000 sol=sol19
+B2_RESULT z=100.000000000 phi=225.000000000 Fx_raw=0.194192408644 Fx_total_corr=-0.283744594838 DeltaFx_ball=-0.159364820163mN
+POSE phi_deg=270.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=270.000000000_119283242210300 sol=sol20 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=270.000000000 sol=sol20
+SOLVE_DONE B2 z=100.000000000 phi=270.000000000 sol=sol20
+B2_RESULT z=100.000000000 phi=270.000000000 Fx_raw=0.164877142926 Fx_total_corr=-0.313059860556 DeltaFx_ball=-0.188680085881mN
+POSE phi_deg=315.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=315.000000000_119286974061900 sol=sol21 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=315.000000000 sol=sol21
+SOLVE_DONE B2 z=100.000000000 phi=315.000000000 sol=sol21
+B2_RESULT z=100.000000000 phi=315.000000000 Fx_raw=0.194428864513 Fx_total_corr=-0.283508138969 DeltaFx_ball=-0.159128364294mN
+POSE phi_deg=360.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=100.000000000_phi=360.000000000_119290686983800 sol=sol22 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=100.000000000 phi=360.000000000 sol=sol22
+SOLVE_DONE B2 z=100.000000000 phi=360.000000000 sol=sol22
+B2_RESULT z=100.000000000 phi=360.000000000 Fx_raw=0.265554463992 Fx_total_corr=-0.212382539490 DeltaFx_ball=-0.0880027648150mN
+CHECKPOINT_SAVED z=100.000000000
+HEIGHT_START z=90.0000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 65.0, 115.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=90.0000000000_119296727645200 sol=sol23 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=90.0000000000 sol=sol23
+SOLVE_DONE B0 z=90.0000000000 sol=sol23
+B0_RESULT z=90.0000000000 Fx=1.69345122124mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=90.0000000000_119300241619400 sol=sol24 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=90.0000000000 sol=sol24
+SOLVE_DONE B1 z=90.0000000000 sol=sol24
+B1_RESULT z=90.0000000000 Fx=1.56835833124mN hold_corr=-0.125092890005mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=0.00000000000_119303632971700 sol=sol25 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=0.00000000000 sol=sol25
+SOLVE_DONE B2 z=90.0000000000 phi=0.00000000000 sol=sol25
+B2_RESULT z=90.0000000000 phi=0.00000000000 Fx_raw=1.44471716752 Fx_total_corr=-0.248734053720 DeltaFx_ball=-0.123641163716mN
+POSE phi_deg=45.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=45.0000000000_119307124006200 sol=sol26 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=45.0000000000 sol=sol26
+SOLVE_DONE B2 z=90.0000000000 phi=45.0000000000 sol=sol26
+B2_RESULT z=90.0000000000 phi=45.0000000000 Fx_raw=1.55004128570 Fx_total_corr=-0.143409935547 DeltaFx_ball=-0.0183170455427mN
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=90.0000000000_119310422687100 sol=sol27 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=90.0000000000 sol=sol27
+SOLVE_DONE B2 z=90.0000000000 phi=90.0000000000 sol=sol27
+B2_RESULT z=90.0000000000 phi=90.0000000000 Fx_raw=1.59359162530 Fx_total_corr=-0.0998595959454 DeltaFx_ball=0.0252332940591mN
+POSE phi_deg=135.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=135.000000000_119313820540900 sol=sol28 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=135.000000000 sol=sol28
+SOLVE_DONE B2 z=90.0000000000 phi=135.000000000 sol=sol28
+B2_RESULT z=90.0000000000 phi=135.000000000 Fx_raw=1.54981517583 Fx_total_corr=-0.143636045410 DeltaFx_ball=-0.0185431554059mN
+POSE phi_deg=180.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=180.000000000_119317068144900 sol=sol29 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=180.000000000 sol=sol29
+SOLVE_DONE B2 z=90.0000000000 phi=180.000000000 sol=sol29
+B2_RESULT z=90.0000000000 phi=180.000000000 Fx_raw=1.44439551693 Fx_total_corr=-0.249055704317 DeltaFx_ball=-0.123962814313mN
+POSE phi_deg=225.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=225.000000000_119320393878900 sol=sol30 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=225.000000000 sol=sol30
+SOLVE_DONE B2 z=90.0000000000 phi=225.000000000 sol=sol30
+B2_RESULT z=90.0000000000 phi=225.000000000 Fx_raw=1.33912786492 Fx_total_corr=-0.354323356329 DeltaFx_ball=-0.229230466325mN
+POSE phi_deg=270.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=270.000000000_119323665304700 sol=sol31 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=270.000000000 sol=sol31
+SOLVE_DONE B2 z=90.0000000000 phi=270.000000000 sol=sol31
+B2_RESULT z=90.0000000000 phi=270.000000000 Fx_raw=1.29563665531 Fx_total_corr=-0.397814565938 DeltaFx_ball=-0.272721675934mN
+POSE phi_deg=315.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=315.000000000_119326978559300 sol=sol32 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=315.000000000 sol=sol32
+SOLVE_DONE B2 z=90.0000000000 phi=315.000000000 sol=sol32
+B2_RESULT z=90.0000000000 phi=315.000000000 Fx_raw=1.33935663782 Fx_total_corr=-0.354094583429 DeltaFx_ball=-0.229001693425mN
+POSE phi_deg=360.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=90.0000000000_phi=360.000000000_119330247997100 sol=sol33 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=90.0000000000 phi=360.000000000 sol=sol33
+SOLVE_DONE B2 z=90.0000000000 phi=360.000000000 sol=sol33
+B2_RESULT z=90.0000000000 phi=360.000000000 Fx_raw=1.44471716750 Fx_total_corr=-0.248734053740 DeltaFx_ball=-0.123641163736mN
+CHECKPOINT_SAVED z=90.0000000000
+HEIGHT_START z=80.0000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 55.0, 105.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=80.0000000000_119336000680200 sol=sol34 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=80.0000000000 sol=sol34
+SOLVE_DONE B0 z=80.0000000000 sol=sol34
+B0_RESULT z=80.0000000000 Fx=0.750859481100mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=80.0000000000_119339529024500 sol=sol35 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=80.0000000000 sol=sol35
+SOLVE_DONE B1 z=80.0000000000 sol=sol35
+B1_RESULT z=80.0000000000 Fx=0.626645006077mN hold_corr=-0.124214475023mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=0.00000000000_119342984007200 sol=sol36 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=0.00000000000 sol=sol36
+SOLVE_DONE B2 z=80.0000000000 phi=0.00000000000 sol=sol36
+B2_RESULT z=80.0000000000 phi=0.00000000000 Fx_raw=0.415381012368 Fx_total_corr=-0.335478468732 DeltaFx_ball=-0.211263993709mN
+POSE phi_deg=45.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=45.0000000000_119346315801100 sol=sol37 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=45.0000000000 sol=sol37
+SOLVE_DONE B2 z=80.0000000000 phi=45.0000000000 sol=sol37
+B2_RESULT z=80.0000000000 phi=45.0000000000 Fx_raw=0.537623134768 Fx_total_corr=-0.213236346331 DeltaFx_ball=-0.0890218713086mN
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=90.0000000000_119349582663800 sol=sol38 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=90.0000000000 sol=sol38
+SOLVE_DONE B2 z=80.0000000000 phi=90.0000000000 sol=sol38
+B2_RESULT z=80.0000000000 phi=90.0000000000 Fx_raw=0.588304363912 Fx_total_corr=-0.162555117187 DeltaFx_ball=-0.0383406421645mN
+POSE phi_deg=135.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=135.000000000_119353026207100 sol=sol39 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=135.000000000 sol=sol39
+SOLVE_DONE B2 z=80.0000000000 phi=135.000000000 sol=sol39
+B2_RESULT z=80.0000000000 phi=135.000000000 Fx_raw=0.537622910930 Fx_total_corr=-0.213236570170 DeltaFx_ball=-0.0890220951472mN
+POSE phi_deg=180.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=180.000000000_119356282323500 sol=sol40 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=180.000000000 sol=sol40
+SOLVE_DONE B2 z=80.0000000000 phi=180.000000000 sol=sol40
+B2_RESULT z=80.0000000000 phi=180.000000000 Fx_raw=0.415382809264 Fx_total_corr=-0.335476671836 DeltaFx_ball=-0.211262196813mN
+POSE phi_deg=225.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=225.000000000_119359655761600 sol=sol41 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=225.000000000 sol=sol41
+SOLVE_DONE B2 z=80.0000000000 phi=225.000000000 sol=sol41
+B2_RESULT z=80.0000000000 phi=225.000000000 Fx_raw=0.293304064771 Fx_total_corr=-0.457555416329 DeltaFx_ball=-0.333340941306mN
+POSE phi_deg=270.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=270.000000000_119363016101700 sol=sol42 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=270.000000000 sol=sol42
+SOLVE_DONE B2 z=80.0000000000 phi=270.000000000 sol=sol42
+B2_RESULT z=80.0000000000 phi=270.000000000 Fx_raw=0.242783224578 Fx_total_corr=-0.508076256521 DeltaFx_ball=-0.383861781499mN
+POSE phi_deg=315.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=315.000000000_119366642818200 sol=sol43 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=315.000000000 sol=sol43
+SOLVE_DONE B2 z=80.0000000000 phi=315.000000000 sol=sol43
+B2_RESULT z=80.0000000000 phi=315.000000000 Fx_raw=0.293301299606 Fx_total_corr=-0.457558181493 DeltaFx_ball=-0.333343706471mN
+POSE phi_deg=360.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=80.0000000000_phi=360.000000000_119369966632400 sol=sol44 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=80.0000000000 phi=360.000000000 sol=sol44
+SOLVE_DONE B2 z=80.0000000000 phi=360.000000000 sol=sol44
+B2_RESULT z=80.0000000000 phi=360.000000000 Fx_raw=0.415381012372 Fx_total_corr=-0.335478468728 DeltaFx_ball=-0.211263993705mN
+CHECKPOINT_SAVED z=80.0000000000
+FINAL_MODEL_SAVED
+FINISH csv=H:\comsolcc\comsol_magnet\work\modelB_lower_z_same_mesh_20260911\modelB_same_mesh_differential_sparse.csv
