@@ -15,6 +15,7 @@ import java.util.*;
 public class StaticForceValidation141142 {
   static final String FORCE_EXPR = "mfnc.Forcex_force_magnet";
   static final double[] SPARSE_ANGLES_DEG = new double[]{0,45,90,135,180,225,270,315,360};
+  static final double[] CANDIDATE_ANGLES_DEG = new double[]{0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360};
   static final Locale LOCALE = Locale.US;
   static String onConstitutive, onMurMat, onMur, onBrMat, onBr;
 
@@ -487,8 +488,23 @@ public class StaticForceValidation141142 {
     log(String.format(LOCALE, "SPARSE_HEIGHT_FINISH z=%.8g elements=%d", z, elements));
   }
 
+  // 候选复核模式：每个高度做 10° 全周期姿态采样，并仅做一次 AIR(phi=0) 对照。
+  static void runCandidateHeight(Model m, Path out, double z, int elements, String linearSolver, String stol, PrintWriter csv) throws Exception {
+    log(String.format(LOCALE, "CANDIDATE_HEIGHT_START z=%.8g angles=0:10:360", z));
+    restoreOnConfiguration(m);
+    for (double phi : CANDIDATE_ANGLES_DEG) {
+      restoreOnConfiguration(m);
+      solvePose(m, out, z, phi, elements, "ON", linearSolver, stol, csv, false);
+    }
+    applyAirBallOverride(m);
+    solvePose(m, out, z, 0.0, elements, "AIR", linearSolver, stol, csv, false);
+    restoreOnConfiguration(m);
+    m.save(out.resolve(String.format(LOCALE, "height_z%g_candidate_final.mph", z).replace('.', 'p')).toString());
+    log(String.format(LOCALE, "CANDIDATE_HEIGHT_FINISH z=%.8g elements=%d", z, elements));
+  }
+
   public static void main(String[] args) {
-    if (args.length < 6) throw new IllegalArgumentException("Usage: source.mph outdir mode(ON|AIR|AIR_BR0|PAIR|SPARSE) linearSolver stol [meshMode(M0|M1|M2)] z:phi [z:phi ...]");
+    if (args.length < 6) throw new IllegalArgumentException("Usage: source.mph outdir mode(ON|AIR|AIR_BR0|PAIR|SPARSE|CANDIDATE) linearSolver stol [meshMode(M0|M1|M2)] z:phi [z:phi ...]");
     String source = args[0]; Path out = Paths.get(args[1]); String mode = args[2]; String linearSolver = args[3]; String stol = args[4];
     try {
       Files.createDirectories(out);
@@ -501,7 +517,7 @@ public class StaticForceValidation141142 {
       log("PARAM omega=" + m.param().get("omega") + " T_cycle=" + m.param().get("T_cycle"));
       removeStudiesSolutionsNumericals(m);
       removeCommonRotatingDomain(m);
-      if (!"ON".equalsIgnoreCase(mode) && !"AIR".equalsIgnoreCase(mode) && !"AIR_BR0".equalsIgnoreCase(mode) && !"PAIR".equalsIgnoreCase(mode) && !"SPARSE".equalsIgnoreCase(mode)) throw new IllegalArgumentException("mode must be ON, AIR, AIR_BR0, PAIR, or SPARSE");
+      if (!"ON".equalsIgnoreCase(mode) && !"AIR".equalsIgnoreCase(mode) && !"AIR_BR0".equalsIgnoreCase(mode) && !"PAIR".equalsIgnoreCase(mode) && !"SPARSE".equalsIgnoreCase(mode) && !"CANDIDATE".equalsIgnoreCase(mode)) throw new IllegalArgumentException("mode must be ON, AIR, AIR_BR0, PAIR, SPARSE, or CANDIDATE");
       captureOnConfiguration(m);
       if ("AIR".equalsIgnoreCase(mode)) applyAirBallOverride(m);
       else if ("AIR_BR0".equalsIgnoreCase(mode)) applyAirBallBrZeroOverride(m);
@@ -513,12 +529,13 @@ public class StaticForceValidation141142 {
       PrintWriter csv = new PrintWriter(Files.newBufferedWriter(out.resolve("static_force_results.csv")));
       csv.println("mode,z_mm,phi_deg,ux,uy,uz,solution,linear_solver,tolerance,mesh_elements,dofs,Fx_N,Fx_mN,Fx_mN_from_N,status,reproducibility,mesh_validation");
       double activeZ = Double.NaN; int elements = 0;
-      if ("SPARSE".equalsIgnoreCase(mode)) {
+      if ("SPARSE".equalsIgnoreCase(mode) || "CANDIDATE".equalsIgnoreCase(mode)) {
         if (args.length <= poseStart) throw new IllegalArgumentException("SPARSE requires one or more z values in mm");
         for (int i = poseStart; i < args.length; i++) {
           double z = Double.parseDouble(args[i]);
           elements = rebuildGeometryAndMesh(m, z, meshMode);
-          runSparseHeight(m, out, z, elements, linearSolver, stol, csv);
+          if ("CANDIDATE".equalsIgnoreCase(mode)) runCandidateHeight(m, out, z, elements, linearSolver, stol, csv);
+          else runSparseHeight(m, out, z, elements, linearSolver, stol, csv);
         }
       } else for (int i = poseStart; i < args.length; i++) {
         String[] pair = args[i].split(":");
