@@ -80,3 +80,16 @@
   分解阶段约90%处长期无实质 CPU 进展，内存日志达到约30 GB私有占用，最终
   仅保留失败日志，不接受任何 h002 力值。
 - 版本：COMSOL 6.3，Windows 11。
+
+## 2026-09-11：Model B 局部空气网格收敛与 alpha 扫描
+
+- 直接用 Box/相邻域推导局部边界会误选外部空气边界，导致局部细网格扩散到大空气域；
+  最终改用 `GeomMeasureFinal` 的实体 bbox，选择圆柱全部边界、钢片前表面和中心孔边缘，
+  得到 11 个真实近场边界。
+- `CURRENT_SOURCE_MESH`、`LOCAL_M03`、`LOCAL_M02` 均成功；M03→M02 的
+  `Fx_total_corr` 变化 0.001529 mN，`DeltaFx_ball` 变化 0.001092 mN，符号稳定。
+- COMSOL 6.3 `comsolcompile` 不可靠地解析跨源文件默认包类路径；alpha 脚本最初依赖
+  `RunModelBLocalMeshConvergence`，编译器返回代码0但实际报 unresolved。修复方式是把
+  alpha 执行分支内联到已编译的本地网格类，并显式编译后检查输出。
+- 固定 LOCAL_M03 网格后，alpha=0–90°、10°步长 10 点全部成功；最佳点 alpha=0°，
+  `Fx_total_corr=-0.053913373 mN`，仍未翻转为正。
