@@ -8,3 +8,6 @@
 *.tmp
 *.bak
 Thumbs.db
+
+# Large local COMSOL run directories; lightweight CSV/log/report artifacts are tracked separately
+work/

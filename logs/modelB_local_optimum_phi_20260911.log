@@ -1,0 +1,73 @@
+REMOVED_ROTATING_DOMAIN=rot1
+START ModelB source=H:\comsolcc\z120_xsphere26_air200_mesh1.mph heights=[120.0] phis=[0.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0, 315.0, 360.0]
+HEIGHT_START z=120.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 95.0, 145.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_SET point=20
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=120.000000000_120482675645400 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=120.000000000 sol=sol1
+SOLVE_DONE B0 z=120.000000000 sol=sol1
+B0_RESULT z=120.000000000 Fx=0.209086704123mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=120.000000000_120496007552600 sol=sol2 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=120.000000000 sol=sol2
+SOLVE_DONE B1 z=120.000000000 sol=sol2
+B1_RESULT z=120.000000000 Fx=0.0842339868849mN hold_corr=-0.124852717238mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=0.00000000000_120503281912000 sol=sol3 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=0.00000000000 sol=sol3
+SOLVE_DONE B2 z=120.000000000 phi=0.00000000000 sol=sol3
+B2_RESULT z=120.000000000 phi=0.00000000000 Fx_raw=0.0567554009227 Fx_total_corr=-0.152331303200 DeltaFx_ball=-0.0274785859623mN
+POSE phi_deg=45.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=45.0000000000_120509736764600 sol=sol4 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=45.0000000000 sol=sol4
+SOLVE_DONE B2 z=120.000000000 phi=45.0000000000 sol=sol4
+B2_RESULT z=120.000000000 phi=45.0000000000 Fx_raw=0.104330777596 Fx_total_corr=-0.104755926527 DeltaFx_ball=0.0200967907112mN
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=90.0000000000_120515484001200 sol=sol5 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=90.0000000000 sol=sol5
+SOLVE_DONE B2 z=120.000000000 phi=90.0000000000 sol=sol5
+B2_RESULT z=120.000000000 phi=90.0000000000 Fx_raw=0.123876253283 Fx_total_corr=-0.0852104508401 DeltaFx_ball=0.0396422663980mN
+POSE phi_deg=135.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=135.000000000_120521290440500 sol=sol6 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=135.000000000 sol=sol6
+SOLVE_DONE B2 z=120.000000000 phi=135.000000000 sol=sol6
+B2_RESULT z=120.000000000 phi=135.000000000 Fx_raw=0.103940613796 Fx_total_corr=-0.105146090328 DeltaFx_ball=0.0197066269106mN
+POSE phi_deg=180.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=180.000000000_120526702081700 sol=sol7 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=180.000000000 sol=sol7
+SOLVE_DONE B2 z=120.000000000 phi=180.000000000 sol=sol7
+B2_RESULT z=120.000000000 phi=180.000000000 Fx_raw=0.0562038398136 Fx_total_corr=-0.152882864310 DeltaFx_ball=-0.0280301470714mN
+POSE phi_deg=225.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=225.000000000_120531314520700 sol=sol8 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=225.000000000 sol=sol8
+SOLVE_DONE B2 z=120.000000000 phi=225.000000000 sol=sol8
+B2_RESULT z=120.000000000 phi=225.000000000 Fx_raw=0.00863122603698 Fx_total_corr=-0.200455478086 DeltaFx_ball=-0.0756027608480mN
+POSE phi_deg=270.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=270.000000000_120536606652700 sol=sol9 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=270.000000000 sol=sol9
+SOLVE_DONE B2 z=120.000000000 phi=270.000000000 sol=sol9
+B2_RESULT z=120.000000000 phi=270.000000000 Fx_raw=-0.0109117888474 Fx_total_corr=-0.219998492970 DeltaFx_ball=-0.0951457757324mN
+POSE phi_deg=315.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=315.000000000_120541792492800 sol=sol10 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=315.000000000 sol=sol10
+SOLVE_DONE B2 z=120.000000000 phi=315.000000000 sol=sol10
+B2_RESULT z=120.000000000 phi=315.000000000 Fx_raw=0.00902108767349 Fx_total_corr=-0.200065616450 DeltaFx_ball=-0.0752128992114mN
+POSE phi_deg=360.000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=360.000000000_120545924353100 sol=sol11 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=360.000000000 sol=sol11
+SOLVE_DONE B2 z=120.000000000 phi=360.000000000 sol=sol11
+B2_RESULT z=120.000000000 phi=360.000000000 Fx_raw=0.0567554007352 Fx_total_corr=-0.152331303388 DeltaFx_ball=-0.0274785861498mN
+CHECKPOINT_SAVED z=120.000000000
+FINAL_MODEL_SAVED
+FINISH csv=H:\comsolcc\comsol_magnet\work\modelB_local_optimum_phi_20260911\modelB_same_mesh_differential_sparse.csv

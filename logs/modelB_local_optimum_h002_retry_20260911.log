@@ -1,0 +1,14 @@
+REMOVED_ROTATING_DOMAIN=rot1
+START ModelB source=H:\comsolcc\z120_xsphere26_air200_mesh1.mph heights=[120.0] phis=[90.0]
+HEIGHT_START z=120.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 95.0, 145.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_SET point=20
+MESH_POLICY far_field_hauto=1 solids_2_3_4=1 duplicate_local_size=off
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=120.000000000_120912654675700 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=120.000000000 sol=sol1

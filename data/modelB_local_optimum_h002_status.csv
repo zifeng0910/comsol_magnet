@@ -1,0 +1,2 @@
+z_sphere_mm,phi_deg,mesh_mode,mesh_elements,DOF,status,detail
+120,90,H002_native_hauto1,,,RESOURCE_LIMIT_BEFORE_FORCE_READ,"Native source mesh generated about 1.24M elements; B0 solve exhausted system memory before Force Calculation extraction. No h002 force value was accepted."

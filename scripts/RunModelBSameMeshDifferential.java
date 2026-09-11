@@ -27,6 +27,10 @@ public class RunModelBSameMeshDifferential {
   static final String FZ = "mfnc.Forcez_force_magnet";
   static final double[] DEFAULT_Z = {120.0, 140.0, 150.0};
   static final double[] PHI = {0,45,90,135,180,225,270,315,360};
+  // 可选的高效模式：每个高度只求 B2 的 phi=90°，B0/B1仍各求一次。
+  static double[] ACTIVE_PHI = PHI;
+  // 最终候选点的高精度复核：恢复源模型原生 hauto=1 远场网格。
+  static boolean H002_MODE = false;
   static final int AIR=1, STEEL=2, CYL=3, BALL=4;
 
   static String f(double x) { return String.format(L, "%.12g", x); }
@@ -158,12 +162,18 @@ public class RunModelBSameMeshDifferential {
 
   static void addFineBallMesh(Model m) {
     MeshSequence mesh=m.component("comp1").mesh("mesh1");
-    mesh.feature("size").set("hauto",6);
+    mesh.feature("size").set("hauto",H002_MODE ? 1 : 6);
     try { mesh.feature().remove("nearfieldfine_b"); } catch(Throwable ignored) {}
+    // hauto=1 已经覆盖全域最细网格；不再叠加局部 Size，避免部分边界
+    // 在细网格重建后未被 Force Calculation 的积分分区登记。
+    if(H002_MODE) {
+      log("MESH_POLICY far_field_hauto=1 solids_2_3_4=1 duplicate_local_size=off");
+      return;
+    }
     MeshFeature nf=mesh.feature().create("nearfieldfine_b","Size");
     nf.selection().geom("geom1",3); nf.selection().set(new int[]{STEEL,CYL,BALL}); nf.set("hauto",1);
     try { mesh.feature().move("nearfieldfine_b",1); } catch(Throwable ignored) {}
-    log("MESH_POLICY far_field_hauto=6 solids_2_3_4=1");
+    log("MESH_POLICY far_field_hauto="+(H002_MODE ? "1" : "6")+" solids_2_3_4=1");
   }
   static String makeStationary(Model m,String suffix) {
     String st="b_stat_"+suffix+"_"+System.nanoTime(); m.study().create(st); m.study(st).create("stat","Stationary"); m.study(st).createAutoSequences("all");
@@ -221,19 +231,23 @@ public class RunModelBSameMeshDifferential {
     setSteelOn(m); setBallOff(m); setPose(m,0); double[] b1=solveRead(m,"B1 z="+f(z)); dof=dofs(m,m.sol().tags()[m.sol().tags().length-1]); w.println(row(f(z),"B1","0",b1,b0,b1,ne,dof,q,"SUCCESS")); w.flush(); log("B1_RESULT z="+f(z)+" Fx="+f(b1[0])+"mN hold_corr="+f(b1[0]-b0[0])+"mN");
     // B2: both on; nine independent static poses, same geometry and mesh.
     setSteelOn(m); setBallOn(m);
-    for(double phi:PHI){setPose(m,phi); double[] b2=solveRead(m,"B2 z="+f(z)+" phi="+f(phi)); dof=dofs(m,m.sol().tags()[m.sol().tags().length-1]); w.println(row(f(z),"B2",f(phi),b2,b0,b1,ne,dof,q,"SUCCESS")); w.flush(); log("B2_RESULT z="+f(z)+" phi="+f(phi)+" Fx_raw="+f(b2[0])+" Fx_total_corr="+f(b2[0]-b0[0])+" DeltaFx_ball="+f(b2[0]-b1[0])+"mN");}
+    for(double phi:ACTIVE_PHI){setPose(m,phi); double[] b2=solveRead(m,"B2 z="+f(z)+" phi="+f(phi)); dof=dofs(m,m.sol().tags()[m.sol().tags().length-1]); w.println(row(f(z),"B2",f(phi),b2,b0,b1,ne,dof,q,"SUCCESS")); w.flush(); log("B2_RESULT z="+f(z)+" phi="+f(phi)+" Fx_raw="+f(b2[0])+" Fx_total_corr="+f(b2[0]-b0[0])+" DeltaFx_ball="+f(b2[0]-b1[0])+"mN");}
     try { Files.createDirectories(out); m.save(out.resolve("modelB_latest_z"+ztag(z)+".mph").toString()); log("CHECKPOINT_SAVED z="+f(z)); } catch(Throwable e){log("CHECKPOINT_SAVE_ERROR z="+f(z)+" "+e.getMessage());}
   }
 
   public static void main(String[] a) throws Exception {
     if(a.length<2)throw new IllegalArgumentException("Usage: source.mph output_dir [z_mm ...]");
-    ArrayList<Double> zs=new ArrayList<Double>(); if(a.length==2)for(double z:DEFAULT_Z)zs.add(z);else for(int i=2;i<a.length;i++)zs.add(Double.parseDouble(a[i]));
+    ArrayList<Double> zs=new ArrayList<Double>();
+    int zStart=2;
+    if(a.length>=3 && "PHI90_ONLY".equalsIgnoreCase(a[2])) { ACTIVE_PHI=new double[]{90.0}; zStart=3; }
+    if(a.length>=3 && "H002_ONLY".equalsIgnoreCase(a[2])) { H002_MODE=true; ACTIVE_PHI=new double[]{90.0}; zStart=3; }
+    if(a.length==zStart)for(double z:DEFAULT_Z)zs.add(z);else for(int i=zStart;i<a.length;i++)zs.add(Double.parseDouble(a[i]));
     Path out=Paths.get(a[1]); Files.createDirectories(out); Path csv=out.resolve("modelB_same_mesh_differential_sparse.csv");
     ModelUtil.initStandalone(false);
     try { ModelUtil.showProgress(out.resolve("progress.log").toString()); Model m=ModelUtil.load("modelB_diff_"+System.nanoTime(),a[0]);
       for(String t:m.sol().tags())try{m.sol().remove(t);}catch(Throwable ignored){} for(String t:m.study().tags())try{m.study().remove(t);}catch(Throwable ignored){}
       for(String t:m.component("comp1").common().tags())try{if("RotatingDomain".equals(m.component("comp1").common(t).getType())){m.component("comp1").common().remove(t);log("REMOVED_ROTATING_DOMAIN="+t);}}catch(Throwable ignored){}
-      log("START ModelB source="+a[0]+" heights="+zs+" phis="+Arrays.toString(PHI));
+      log("START ModelB source="+a[0]+" heights="+zs+" phis="+Arrays.toString(ACTIVE_PHI));
       try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING))){header(w); for(double z:zs){try{runHeight(m,z,w,out);}catch(Throwable e){log("HEIGHT_ERROR z="+f(z)+" "+e.getMessage());e.printStackTrace(System.out);w.println(String.join(",",f(z),"ERROR","","","","","","","","","","","","ERROR"));w.flush();}}}
       try{m.save(out.resolve("modelB_same_mesh_differential_sparse_final.mph").toString());log("FINAL_MODEL_SAVED");}catch(Throwable e){log("FINAL_MODEL_SAVE_ERROR "+e.getMessage());}
       log("FINISH csv="+csv);

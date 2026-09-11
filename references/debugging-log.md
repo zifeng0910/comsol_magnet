@@ -66,3 +66,17 @@
   仍保持稳定；原始 B0 self-force 继续明显漂移，不能替代差分力。
 - 0°/360°独立闭合误差约 1e-10 mN；没有进行角度加密或继续向下扩展。
 - 版本：COMSOL 6.3，Windows 11。
+
+## 2026-09-11：Model B z 局部细扫与候选 h002 资源失败
+
+- 13 个高度 z=110–140 mm（步长2.5 mm）只计算 phi=90°的 B0/B1/B2，全部
+  `SUCCESS`；直接实算最大值为 z=120 mm，`Fx_total_corr=-0.085210451 mN`。
+- z=120 mm 的 0–360°、45°间隔复核全部 `SUCCESS`，最大值仍在90°，为
+  -0.085210451 mN；最小值在270°，为 -0.219998493 mN；360−0 闭合误差约
+  1.9e-10 mN。
+- h002 候选尝试中，源模型原生 `mesh1` 为 `hauto=1`，约1.24M单元。若继续
+  叠加局部 Size，会导致 Force Calculation 报 `Source selection not in mesh
+  partition`；去掉重复局部 Size 后该错误消失，但 B0 的 PARDISO 求解在矩阵
+  分解阶段约90%处长期无实质 CPU 进展，内存日志达到约30 GB私有占用，最终
+  仅保留失败日志，不接受任何 h002 力值。
+- 版本：COMSOL 6.3，Windows 11。

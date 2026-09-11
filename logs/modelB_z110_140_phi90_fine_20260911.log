@@ -1,0 +1,381 @@
+REMOVED_ROTATING_DOMAIN=rot1
+START ModelB source=H:\comsolcc\z120_xsphere26_air200_mesh1.mph heights=[110.0, 112.5, 115.0, 117.5, 120.0, 122.5, 125.0, 127.5, 130.0, 132.5, 135.0, 137.5, 140.0] phis=[90.0]
+HEIGHT_START z=110.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 85.0, 135.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_SET point=20
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=110.000000000_120186542496400 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=110.000000000 sol=sol1
+SOLVE_DONE B0 z=110.000000000 sol=sol1
+B0_RESULT z=110.000000000 Fx=0.713491912637mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=110.000000000_120192386201600 sol=sol2 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=110.000000000 sol=sol2
+SOLVE_DONE B1 z=110.000000000 sol=sol2
+B1_RESULT z=110.000000000 Fx=0.588999251112mN hold_corr=-0.124492661525mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=110.000000000_phi=90.0000000000_120196456872300 sol=sol3 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=110.000000000 phi=90.0000000000 sol=sol3
+SOLVE_DONE B2 z=110.000000000 phi=90.0000000000 sol=sol3
+B2_RESULT z=110.000000000 phi=90.0000000000 Fx_raw=0.617747439095 Fx_total_corr=-0.0957444735421 DeltaFx_ball=0.0287481879830mN
+CHECKPOINT_SAVED z=110.000000000
+HEIGHT_START z=112.500000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 87.5, 137.5]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=112.500000000_120202446646000 sol=sol4 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=112.500000000 sol=sol4
+SOLVE_DONE B0 z=112.500000000 sol=sol4
+B0_RESULT z=112.500000000 Fx=-0.0754036792249mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=112.500000000_120206119583500 sol=sol5 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=112.500000000 sol=sol5
+SOLVE_DONE B1 z=112.500000000 sol=sol5
+B1_RESULT z=112.500000000 Fx=-0.200210220578mN hold_corr=-0.124806541353mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=112.500000000_phi=90.0000000000_120209387850500 sol=sol6 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=112.500000000 phi=90.0000000000 sol=sol6
+SOLVE_DONE B2 z=112.500000000 phi=90.0000000000 sol=sol6
+B2_RESULT z=112.500000000 phi=90.0000000000 Fx_raw=-0.162375156231 Fx_total_corr=-0.0869714770060 DeltaFx_ball=0.0378350643468mN
+CHECKPOINT_SAVED z=112.500000000
+HEIGHT_START z=115.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 90.0, 140.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=115.000000000_120214476908800 sol=sol7 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=115.000000000 sol=sol7
+SOLVE_DONE B0 z=115.000000000 sol=sol7
+B0_RESULT z=115.000000000 Fx=-0.650094023472mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=115.000000000_120217707352500 sol=sol8 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=115.000000000 sol=sol8
+SOLVE_DONE B1 z=115.000000000 sol=sol8
+B1_RESULT z=115.000000000 Fx=-0.774811736207mN hold_corr=-0.124717712735mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=115.000000000_phi=90.0000000000_120220763529700 sol=sol9 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=115.000000000 phi=90.0000000000 sol=sol9
+SOLVE_DONE B2 z=115.000000000 phi=90.0000000000 sol=sol9
+B2_RESULT z=115.000000000 phi=90.0000000000 Fx_raw=-0.757587062592 Fx_total_corr=-0.107493039120 DeltaFx_ball=0.0172246736149mN
+CHECKPOINT_SAVED z=115.000000000
+HEIGHT_START z=117.500000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 92.5, 142.5]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=117.500000000_120225609055000 sol=sol10 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=117.500000000 sol=sol10
+SOLVE_DONE B0 z=117.500000000 sol=sol10
+B0_RESULT z=117.500000000 Fx=-0.453216100490mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=117.500000000_120228746423300 sol=sol11 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=117.500000000 sol=sol11
+SOLVE_DONE B1 z=117.500000000 sol=sol11
+B1_RESULT z=117.500000000 Fx=-0.578171901626mN hold_corr=-0.124955801136mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=117.500000000_phi=90.0000000000_120231955981000 sol=sol12 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=117.500000000 phi=90.0000000000 sol=sol12
+SOLVE_DONE B2 z=117.500000000 phi=90.0000000000 sol=sol12
+B2_RESULT z=117.500000000 phi=90.0000000000 Fx_raw=-0.545195504443 Fx_total_corr=-0.0919794039533 DeltaFx_ball=0.0329763971823mN
+CHECKPOINT_SAVED z=117.500000000
+HEIGHT_START z=120.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 95.0, 145.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=120.000000000_120236978924400 sol=sol13 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=120.000000000 sol=sol13
+SOLVE_DONE B0 z=120.000000000 sol=sol13
+B0_RESULT z=120.000000000 Fx=0.209086704136mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=120.000000000_120240551262500 sol=sol14 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=120.000000000 sol=sol14
+SOLVE_DONE B1 z=120.000000000 sol=sol14
+B1_RESULT z=120.000000000 Fx=0.0842339869076mN hold_corr=-0.124852717228mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=120.000000000_phi=90.0000000000_120243583135800 sol=sol15 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=120.000000000 phi=90.0000000000 sol=sol15
+SOLVE_DONE B2 z=120.000000000 phi=90.0000000000 sol=sol15
+B2_RESULT z=120.000000000 phi=90.0000000000 Fx_raw=0.123876253233 Fx_total_corr=-0.0852104509033 DeltaFx_ball=0.0396422663251mN
+CHECKPOINT_SAVED z=120.000000000
+HEIGHT_START z=122.500000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 97.5, 147.5]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=122.500000000_120249210947200 sol=sol16 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=122.500000000 sol=sol16
+SOLVE_DONE B0 z=122.500000000 sol=sol16
+B0_RESULT z=122.500000000 Fx=1.07808064924mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=122.500000000_120253263036800 sol=sol17 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=122.500000000 sol=sol17
+SOLVE_DONE B1 z=122.500000000 sol=sol17
+B1_RESULT z=122.500000000 Fx=0.953628465389mN hold_corr=-0.124452183850mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=122.500000000_phi=90.0000000000_120258707724000 sol=sol18 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=122.500000000 phi=90.0000000000 sol=sol18
+SOLVE_DONE B2 z=122.500000000 phi=90.0000000000 sol=sol18
+B2_RESULT z=122.500000000 phi=90.0000000000 Fx_raw=0.969233102159 Fx_total_corr=-0.108847547080 DeltaFx_ball=0.0156046367697mN
+CHECKPOINT_SAVED z=122.500000000
+HEIGHT_START z=125.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 100.0, 150.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=125.000000000_120268559392000 sol=sol19 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=125.000000000 sol=sol19
+SOLVE_DONE B0 z=125.000000000 sol=sol19
+B0_RESULT z=125.000000000 Fx=-0.946363864292mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=125.000000000_120272517608200 sol=sol20 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=125.000000000 sol=sol20
+SOLVE_DONE B1 z=125.000000000 sol=sol20
+B1_RESULT z=125.000000000 Fx=-1.07103634281mN hold_corr=-0.124672478522mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=125.000000000_phi=90.0000000000_120276343043300 sol=sol21 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=125.000000000 phi=90.0000000000 sol=sol21
+SOLVE_DONE B2 z=125.000000000 phi=90.0000000000 sol=sol21
+B2_RESULT z=125.000000000 phi=90.0000000000 Fx_raw=-1.05007231178 Fx_total_corr=-0.103708447486 DeltaFx_ball=0.0209640310360mN
+CHECKPOINT_SAVED z=125.000000000
+HEIGHT_START z=127.500000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 102.5, 152.5]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=127.500000000_120282485426100 sol=sol22 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=127.500000000 sol=sol22
+SOLVE_DONE B0 z=127.500000000 sol=sol22
+B0_RESULT z=127.500000000 Fx=0.279394979169mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=127.500000000_120286324580400 sol=sol23 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=127.500000000 sol=sol23
+SOLVE_DONE B1 z=127.500000000 sol=sol23
+B1_RESULT z=127.500000000 Fx=0.154257811770mN hold_corr=-0.125137167398mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=127.500000000_phi=90.0000000000_120290215037700 sol=sol24 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=127.500000000 phi=90.0000000000 sol=sol24
+SOLVE_DONE B2 z=127.500000000 phi=90.0000000000 sol=sol24
+B2_RESULT z=127.500000000 phi=90.0000000000 Fx_raw=0.177190634931 Fx_total_corr=-0.102204344237 DeltaFx_ball=0.0229328231610mN
+CHECKPOINT_SAVED z=127.500000000
+HEIGHT_START z=130.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 105.0, 155.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=130.000000000_120298940253200 sol=sol25 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=130.000000000 sol=sol25
+SOLVE_DONE B0 z=130.000000000 sol=sol25
+B0_RESULT z=130.000000000 Fx=0.0681963035891mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=130.000000000_120305688108800 sol=sol26 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=130.000000000 sol=sol26
+SOLVE_DONE B1 z=130.000000000 sol=sol26
+B1_RESULT z=130.000000000 Fx=-0.0564878235035mN hold_corr=-0.124684127093mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=130.000000000_phi=90.0000000000_120312165941300 sol=sol27 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=130.000000000 phi=90.0000000000 sol=sol27
+SOLVE_DONE B2 z=130.000000000 phi=90.0000000000 sol=sol27
+B2_RESULT z=130.000000000 phi=90.0000000000 Fx_raw=-0.0347688955288 Fx_total_corr=-0.102965199118 DeltaFx_ball=0.0217189279747mN
+CHECKPOINT_SAVED z=130.000000000
+HEIGHT_START z=132.500000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 107.5, 157.5]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=132.500000000_120322120093300 sol=sol28 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=132.500000000 sol=sol28
+SOLVE_DONE B0 z=132.500000000 sol=sol28
+B0_RESULT z=132.500000000 Fx=0.627032318266mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=132.500000000_120328953961800 sol=sol29 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=132.500000000 sol=sol29
+SOLVE_DONE B1 z=132.500000000 sol=sol29
+B1_RESULT z=132.500000000 Fx=0.502004135903mN hold_corr=-0.125028182363mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=132.500000000_phi=90.0000000000_120334439713900 sol=sol30 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=132.500000000 phi=90.0000000000 sol=sol30
+SOLVE_DONE B2 z=132.500000000 phi=90.0000000000 sol=sol30
+B2_RESULT z=132.500000000 phi=90.0000000000 Fx_raw=0.525521190479 Fx_total_corr=-0.101511127788 DeltaFx_ball=0.0235170545757mN
+CHECKPOINT_SAVED z=132.500000000
+HEIGHT_START z=135.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 110.0, 160.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=135.000000000_120340479322500 sol=sol31 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=135.000000000 sol=sol31
+SOLVE_DONE B0 z=135.000000000 sol=sol31
+B0_RESULT z=135.000000000 Fx=-0.784591564294mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=135.000000000_120344033571400 sol=sol32 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=135.000000000 sol=sol32
+SOLVE_DONE B1 z=135.000000000 sol=sol32
+B1_RESULT z=135.000000000 Fx=-0.909072664377mN hold_corr=-0.124481100082mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=135.000000000_phi=90.0000000000_120347687277500 sol=sol33 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=135.000000000 phi=90.0000000000 sol=sol33
+SOLVE_DONE B2 z=135.000000000 phi=90.0000000000 sol=sol33
+B2_RESULT z=135.000000000 phi=90.0000000000 Fx_raw=-0.898337988086 Fx_total_corr=-0.113746423792 DeltaFx_ball=0.0107346762905mN
+CHECKPOINT_SAVED z=135.000000000
+HEIGHT_START z=137.500000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 112.5, 162.5]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=137.500000000_120353697729900 sol=sol34 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=137.500000000 sol=sol34
+SOLVE_DONE B0 z=137.500000000 sol=sol34
+B0_RESULT z=137.500000000 Fx=1.33008966280mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=137.500000000_120357302286000 sol=sol35 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=137.500000000 sol=sol35
+SOLVE_DONE B1 z=137.500000000 sol=sol35
+B1_RESULT z=137.500000000 Fx=1.20586291548mN hold_corr=-0.124226747320mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=137.500000000_phi=90.0000000000_120361114010200 sol=sol36 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=137.500000000 phi=90.0000000000 sol=sol36
+SOLVE_DONE B2 z=137.500000000 phi=90.0000000000 sol=sol36
+B2_RESULT z=137.500000000 phi=90.0000000000 Fx_raw=1.20716727916 Fx_total_corr=-0.122922383646 DeltaFx_ball=0.00130436367434mN
+CHECKPOINT_SAVED z=137.500000000
+HEIGHT_START z=140.000000000
+DOMAIN_IDENTITY air=1 steel=2 cylinder=3 ball=4 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0] ball_bbox=[1.0, 51.0, -25.0, 25.0, 115.0, 165.0]
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+BALL_ON_CAPTURE constitutive=RemanentFluxDensity mur_mat=from_mat mur=1 Br_mat=userdef Br=1.46[T]
+PHYSICS_NORMALIZED mfcs1=[3] mfcs2=[2] mfc2=[4] fcal1=[3] ForceName=force_magnet
+REFERENCE_EXISTING points=[20] boundaries=[]
+MESH_POLICY far_field_hauto=6 solids_2_3_4=1
+STEEL_OFF active=RelativePermeability mur=1 Br=0 domains=[2]
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B0_z=140.000000000_120367333843100 sol=sol37 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B0 z=140.000000000 sol=sol37
+SOLVE_DONE B0 z=140.000000000 sol=sol37
+B0_RESULT z=140.000000000 Fx=0.780910040547mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_OFF active=RelativePermeability mur=1 Br=0 domains=[4]
+POSE phi_deg=0.00000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B1_z=140.000000000_120371136705700 sol=sol38 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B1 z=140.000000000 sol=sol38
+SOLVE_DONE B1 z=140.000000000 sol=sol38
+B1_RESULT z=140.000000000 Fx=0.656021161179mN hold_corr=-0.124888879368mN
+STEEL_ON restored material=mat5 domains=[2] constitutive=RelativePermeability mur_mat=from_mat Br_mat=from_mat
+BALL_ON restored material=mat3 domains=[3,4] constitutive=RemanentFluxDensity mur_mat=from_mat Br_mat=userdef
+POSE phi_deg=90.0000000000 expected_e=[sin(alpha),cos(alpha)*cos(phi),-cos(alpha)*sin(phi)]
+SOLVER_CONFIG study=b_stat_B2_z=140.000000000_phi=90.0000000000_120375820723200 sol=sol39 direct=pardiso fullyCoupled=dDef stol=1e-6
+SOLVE_START B2 z=140.000000000 phi=90.0000000000 sol=sol39
+SOLVE_DONE B2 z=140.000000000 phi=90.0000000000 sol=sol39
+B2_RESULT z=140.000000000 phi=90.0000000000 Fx_raw=0.672745878792 Fx_total_corr=-0.108164161755 DeltaFx_ball=0.0167247176126mN
+CHECKPOINT_SAVED z=140.000000000
+FINAL_MODEL_SAVED
+FINISH csv=H:\comsolcc\comsol_magnet\work\modelB_z110_140_phi90_fine_20260911\modelB_same_mesh_differential_sparse.csv
