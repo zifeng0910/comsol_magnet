@@ -23,7 +23,7 @@ public class RunModelBLocalMeshConvergence {
   static final String FX="mfnc.Forcex_force_magnet";
   static final String FY="mfnc.Forcey_force_magnet";
   static final String FZ="mfnc.Forcez_force_magnet";
-  static final double Z=120.0, PHI=90.0, GAP=0.30;
+  static final double Z=120.0, PHI=90.0, GAP=0.30, X_SPHERE=26.0;
   static final int AIR=1, STEEL=2, CYL=3, BALL=4;
 
   static void log(String s){System.out.println(s);System.out.flush();}
@@ -130,6 +130,9 @@ public class RunModelBLocalMeshConvergence {
   static void poseAt(Model m,double z,double phi){
     m.param().set("z_sphere",f(z)+"[mm]"); m.param().set("x_gap",f(GAP)+"[mm]"); m.param().set("phi",f(phi)+"[deg]");
     setVec(m.component("comp1").physics("mfnc").feature("mfc2"),"e_crel_BH_RemanentFluxDensity",new String[]{"sin(alpha)","cos(alpha)*cos(phi)","-cos(alpha)*sin(phi)"});
+  }
+  static void poseAtX(Model m,double x,double z,double phi){
+    m.param().set("x_sphere",f(x)+"[mm]"); poseAt(m,z,phi);
   }
   static boolean boundaryContainedInDomain(double[] db,double[] bb){
     double tol=1e-6;
@@ -255,6 +258,35 @@ public class RunModelBLocalMeshConvergence {
       log("Z_RESULT z="+f(z)+" Fx_hold="+f(hold)+" DeltaFx_ball="+f(ball)+" Fx_total="+f(total)+" elements="+ne+" dof="+d+" minq="+f(q)+" status=SUCCESS");
     }catch(Throwable e){w.println(String.join(",",val(z),"","","","","","","","","","","","","UNKNOWN","ERROR"));w.flush();log("Z_ERROR z="+f(z)+" "+e.getClass().getSimpleName()+" "+e.getMessage());e.printStackTrace(System.out);}finally{try{ModelUtil.remove(name);}catch(Throwable ignored){}}
   }
+  /** 固定 z=60、alpha=0、phi=90，向 x+ 方向扫描磁球中心位置。 */
+  static void runOneX(String source,Path out,double x,PrintWriter w)throws Exception{
+    String name="alpha0_x_"+f(x)+"_"+System.nanoTime(); Model m=null;
+    try{
+      m=ModelUtil.load(name,source); cleanup(m); removeRotating(m);
+      m.param().set("x_sphere",f(x)+"[mm]"); m.param().set("x_gap",f(GAP)+"[mm]");
+      m.param().set("z_sphere","60[mm]"); m.param().set("alpha","0[deg]"); m.param().set("phi","90[deg]");
+      m.component("comp1").geom("geom1").run(); verifyDomains(m); capturePhysics(m); normalize(m); reference(m); poseAtX(m,x,60.0,90.0); mesh(m,"LOCAL_M03",0.03);
+      int ne=m.component("comp1").mesh("mesh1").getNumElem(); double q=m.component("comp1").mesh("mesh1").getMinQuality();
+      steelOff(m); ballOff(m); poseAtX(m,x,60.0,90.0); double[] b0=solve(m,"B0 alpha0 x="+f(x));
+      steelOn(m); ballOff(m); poseAtX(m,x,60.0,90.0); double[] b1=solve(m,"B1 alpha0 x="+f(x));
+      steelOn(m); ballOn(m); poseAtX(m,x,60.0,90.0); double[] b2=solve(m,"B2 alpha0 x="+f(x));
+      String[] st=m.sol().tags(); int d=dof(m,st[st.length-1]); double hold=b1[0]-b0[0], ball=b2[0]-b1[0], total=b2[0]-b0[0];
+      w.println(String.join(",",val(x),val(60),val(0),val(90),val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(b2[1]-b0[1]),val(b2[2]-b0[2]),Integer.toString(ne),Integer.toString(d),val(q),"true",total>0?"MAGNETIC_RELEASE_CANDIDATE":"MAGNETICALLY_HELD","SUCCESS")); w.flush();
+      log("X_RESULT x="+f(x)+" Fx_hold="+f(hold)+" DeltaFx_ball="+f(ball)+" Fx_total="+f(total)+" elements="+ne+" dof="+d+" minq="+f(q)+" status=SUCCESS");
+    }catch(Throwable e){
+      w.println(String.join(",",val(x),"60","0","90","","","","","","","","","","","","UNKNOWN","ERROR")); w.flush();
+      log("X_ERROR x="+f(x)+" "+e.getClass().getSimpleName()+" "+e.getMessage()); e.printStackTrace(System.out);
+    }finally{try{ModelUtil.remove(name);}catch(Throwable ignored){}}
+  }
+  static void runXScan(String source,Path out)throws Exception{
+    // x=26 mm 为当前已验证的相切位置；只向 x+ 扫描，避免球体与圆柱穿透。
+    double[] xs=new double[]{26,28,30,32,34,36}; Path csv=out.resolve("modelB_alpha0_x60_scan.csv");
+    try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){
+      w.println("x_sphere_mm,z_sphere_mm,alpha_deg,phi_deg,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,release_candidate,status");
+      for(double x:xs){log("X_START x="+f(x)+" z=60 alpha=0 phi=90 GEOM_MESH_REBUILD=true");runOneX(source,out,x,w);}
+    }
+    log("FINISH csv="+csv);
+  }
   static void runZAlpha0(String source,Path out)throws Exception{
     double[] zs=new double[]{60,70,80,90,100,110,120,130,140};Path csv=out.resolve("modelB_alpha0_z_coarse_scan.csv");
     try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){w.println("z_sphere_mm,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,release_candidate,status");for(double z:zs){log("Z_START z="+f(z)+" alpha=0 GEOM_ONCE_MESH_ONCE=true");runOneZ(source,out,z,w);}}
@@ -273,13 +305,14 @@ public class RunModelBLocalMeshConvergence {
     }finally{try{ModelUtil.remove(name);}catch(Throwable ignored){}}
   }
   public static void main(String[] a)throws Exception{
-    if(a.length<2||a.length>4)throw new IllegalArgumentException("Usage: source.mph output_dir [alpha|alpha0m02|zalpha0] [checkpoint.mph]");Path out=Paths.get(a[1]);Files.createDirectories(out);ModelUtil.initStandalone(false);
+    if(a.length<2||a.length>4)throw new IllegalArgumentException("Usage: source.mph output_dir [alpha|alpha0m02|zalpha0|xscan] [checkpoint.mph]");Path out=Paths.get(a[1]);Files.createDirectories(out);ModelUtil.initStandalone(false);
     try{ModelUtil.showProgress(out.resolve("progress.log").toString());
       if(a.length==3&&"alpha".equalsIgnoreCase(a[2])) runAlpha(a[0],out);
       else if(a.length==4&&"alpha0m02".equalsIgnoreCase(a[2])) runAlpha0M02(a[3],out);
       else if(a.length==3&&"zalpha0".equalsIgnoreCase(a[2])) runZAlpha0(a[0],out);
       else if(a.length==3&&"release".equalsIgnoreCase(a[2])) runReleaseRefinement(a[0],out);
       else if(a.length==3&&"candidateM02".equalsIgnoreCase(a[2])) runCandidateM02(a[0],out);
+      else if(a.length==3&&"xscan".equalsIgnoreCase(a[2])) runXScan(a[0],out);
       else {Path csv=out.resolve("modelB_z120_local_mesh_convergence.csv");try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){header(w);runLevel(a[0],out,"CURRENT_SOURCE_MESH",Double.NaN,w);runLevel(a[0],out,"LOCAL_M03",0.03,w);runLevel(a[0],out,"LOCAL_M02",0.02,w);}log("FINISH csv="+csv);}
     }finally{try{ModelUtil.disconnect();}catch(Throwable ignored){}}
   }
