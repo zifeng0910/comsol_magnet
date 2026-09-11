@@ -93,3 +93,28 @@
   alpha 执行分支内联到已编译的本地网格类，并显式编译后检查输出。
 - 固定 LOCAL_M03 网格后，alpha=0–90°、10°步长 10 点全部成功；最佳点 alpha=0°，
   `Fx_total_corr=-0.053913373 mN`，仍未翻转为正。
+
+## 2026-09-11：alpha=0 空间粗扫与释放候选
+
+- 复用 LOCAL_M02 z=120 检查点，仅新增 alpha=0 的 B2；B0/B1 确认来自同一张
+  1,936,465 单元网格。M02 结果为 `Fx_total_corr=-0.054707939 mN`，与 M03
+  alpha=0 同号且差异 0.000795 mN。
+- alpha=0、LOCAL_M03 从 z=60 开始粗扫；z=60 首次得到 `Fx_total_corr=+0.152767952 mN`，
+  `DeltaFx_ball=+0.281045949 mN`，按停止规则不再继续 z=70 等点。
+- 边界补点 z=50 得 `Fx_total_corr=-0.249865256 mN`，说明该方向力不是随 z 单调增强，
+  不能仅凭 z=60 一个点宣称连续 z 最优。
+- z=60 的 phi=60–120°、10°步长均成功，最大值在 phi=90°，为 `+0.152767952 mN`。
+- 版本：COMSOL 6.3，Windows 11。
+
+## 2026-09-11：alpha=0、z=60 的 LOCAL_M02 候选复核
+
+- 保持 alpha=0、phi=90°、x_sphere=26 mm、gap=0.30 mm、Stationary、PARDISO、
+  stol=1e-6 和同网格 B0/B1/B2 差分定义，使用 LOCAL_M02（局部 hmax=0.02 mm、
+  hmin=0.0066667 mm）。
+- B0/B1/B2 均成功，1,935,733 个单元、2,582,448 DOF、最小单元质量 0.2004；
+  PARDISO 最后一步 LinErr=4.2e-11、LinRes=1.6e-14，求解时间约251 s。
+- 实际结果：B0=0.041144019 mN，B1=-0.087484161 mN，B2=0.174175819 mN；
+  `Fx_hold_corr=-0.128628179 mN`，`DeltaFx_ball=+0.261659979 mN`，
+  `Fx_total_corr=+0.133031800 mN`，标记为 `MAGNETIC_RELEASE_CANDIDATE`。
+- 与 LOCAL_M03 z=60 的 `+0.152767952 mN` 相比绝对差为0.019736152 mN，
+  正号保持，但幅值变化不可忽略；该点是可复现候选，不是最终空间收敛证明。

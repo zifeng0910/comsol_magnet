@@ -1,0 +1,2 @@
+z_sphere_mm,alpha_deg,phi_deg,mesh_level,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,status
+120.000000000,0,90,LOCAL_M02,0.0756958774698,-0.0528848701234,0.0209879389647,-0.128580747593,0.0738728090882,-0.0547079385050,-2.32713974427e-05,-0.0884682033239,1936465,2583434,0.204800000000,true,SUCCESS

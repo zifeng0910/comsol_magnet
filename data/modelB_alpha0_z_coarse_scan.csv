@@ -1,0 +1,2 @@
+z_sphere_mm,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,release_candidate,status
+60.0000000000,0.0593560504772,-0.0689219463642,0.212124002687,-0.128277996841,0.281045949051,0.152767952210,-0.000272787883898,-1.72859986208,871414,1163067,0.210300000000,true,MAGNETIC_RELEASE_CANDIDATE,SUCCESS
