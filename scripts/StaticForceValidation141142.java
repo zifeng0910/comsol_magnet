@@ -413,6 +413,10 @@ public class StaticForceValidation141142 {
     return String.format(LOCALE, "st_%s_z%g_p%g", mode.toLowerCase(Locale.ROOT), z, phi).replace('.', 'p').replace('-', 'm');
   }
 
+  static String zFileTag(double z) {
+    return String.format(LOCALE, "%g", z).replace('.', 'p').replace('-', 'm');
+  }
+
   static void solvePose(Model m, Path out, double z, double phi, int elements, String mode, String linearSolver, String stol, PrintWriter csv) throws Exception {
     solvePose(m, out, z, phi, elements, mode, linearSolver, stol, csv, true);
   }
@@ -484,7 +488,7 @@ public class StaticForceValidation141142 {
     applyAirBallOverride(m);
     solvePose(m, out, z, 0.0, elements, "AIR", linearSolver, stol, csv, false);
     restoreOnConfiguration(m);
-    m.save(out.resolve(String.format(LOCALE, "height_z%g_final.mph", z).replace('.', 'p')).toString());
+    m.save(out.resolve("height_z" + zFileTag(z) + "_final.mph").toString());
     log(String.format(LOCALE, "SPARSE_HEIGHT_FINISH z=%.8g elements=%d", z, elements));
   }
 
@@ -499,7 +503,7 @@ public class StaticForceValidation141142 {
     applyAirBallOverride(m);
     solvePose(m, out, z, 0.0, elements, "AIR", linearSolver, stol, csv, false);
     restoreOnConfiguration(m);
-    m.save(out.resolve(String.format(LOCALE, "height_z%g_candidate_final.mph", z).replace('.', 'p')).toString());
+    m.save(out.resolve("height_z" + zFileTag(z) + "_candidate_final.mph").toString());
     log(String.format(LOCALE, "CANDIDATE_HEIGHT_FINISH z=%.8g elements=%d", z, elements));
   }
 
