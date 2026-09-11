@@ -24,6 +24,15 @@
 - 失败边界：用 `PartitionDomains` 切分包含钢片/圆柱的外空气域，在本模型上长时间停留于几何布尔阶段且无输出；未将其用于正式模型。清空固体物理选择的零净力副本也未取得有效解，不能将失败分支作为物理结果。
 - 版本：COMSOL 6.3，Windows 11。
 
+## 2026-09-11：同网格 ON/OFF 与原生 ForceCalculation Probe
+
+- 症状：对已保存大网格模型先删除 studies/solutions 再 `createAutoSequences("all")`，程序长时间无 `SOLVE_START`；删除结果数据集后复用 `sol1` 也会阻塞。
+- 原因：COMSOL 6.3 大网格的求解序列重建和结果树重映射可能长时间停滞；另一个逻辑错误是 OFF 后没有恢复 mfcs2 的全部活动属性，导致 ON/OFF 被错误地当成相同物理配置。
+- 可用方案：读取源模型的锁定网格和已有 `sol1`，保留 Study/Solution/Dataset，只逐项恢复 `ConstitutiveRelationBH`、`mur_mat`、`mur`、`normBr_crel_BH_RemanentFluxDensity_mat`、`normBr_crel_BH_RemanentFluxDensity`，直接 `sol1.runAll()`。gap=0.30 mm 的 h003/h002 ON-OFF Fx 差值分别为 -0.128360/-0.128802 mN。
+- 症状：在已 Form Union 的模型中新增 `PartitionDomains` 后，向 `selection("domain")` 写最终域编号会停滞。
+- 原因：geometry-operation selection 引用输入几何对象；且 `PartitionDomains` 使用 object 工具时必须先设置 `partitionwith="objects"`。
+- 可用方案：在 `fin` 前插入 Block 与 PartitionDomains，设置 `partitionwith="objects"`，对输入对象选择使用 `selection("domain").all()`，再运行几何；新增空气域后必须重新核验网格质量和物理选择。COMSOL 6.3/Windows 11。
+
 ## 2026-09-11：Force Calculation 自动生成表达式审计
 
 - 症状：需要展开 `mfnc/fcal1` 的 Maxwell 应力积分，核对 `Forcex_force_magnet` 的边界贡献。

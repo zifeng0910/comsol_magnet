@@ -78,6 +78,47 @@ Model B 尚未启动。它必须在 Model A 的 gap=0.30 mm Holding baseline 通
 
 交叉核验文件：[gap030_surface_vs_volume_crosscheck.csv](../data/gap030_surface_vs_volume_crosscheck.csv)；脚本：[RunGap030SurfaceVolumeCrosscheck.java](../scripts/RunGap030SurfaceVolumeCrosscheck.java)。
 
+## gap=0.30 mm：钢片 ON/OFF 同网格控制与原生 Force Probe（2026-09-11）
+
+本轮没有启动 Model B，也没有做高度/角度扫描。首先在已经保存的两档 Model A MPH 上复用原有锁定网格，只切换钢片的磁性配置：ON 恢复源模型 `mfcs2` 的全部属性，OFF 保留钢片几何但切换为 `RelativePermeability`、`mur=1` 且关闭剩磁源。两种状态均复用源 `sol1`，没有删除源 Solution 数据集。
+
+### 同网格钢片控制结果
+
+| mesh | h (mm) | elements | DOF | min quality | Fx OFF (mN) | Fx ON (mN) | ON-OFF Fx (mN) | 同网格 | 状态 |
+|---|---:|---:|---:|---:|---:|---:|---:|---|---|
+| M_h003 | 0.030 | 194131 | 259754 | 0.1606 | -0.247610304802 | -0.375970317168 | -0.128360012366 | yes | SUCCESS |
+| M_h002 | 0.020 | 423088 | 565385 | 0.1446 | -0.097071472523 | -0.225873547608 | -0.128802075085 | yes | SUCCESS |
+
+ON 与 OFF 的横向力差在两档网格下分别为 `-0.128360` 和 `-0.128802 mN`，变化只有约 `0.000442 mN`（约 0.34%）。这说明同一锁定网格下，钢片磁性配置对本模型 Fx 的贡献是可重复的；但它不等于直接表面净力已经完成空间网格收敛。钢片审计的实际标签为 `UNS S30415 [solid]`，源 `mfcs2` 为 `RelativePermeability`、`mur_mat=from_mat`、`mur=1`、`Br_mat=from_mat`、`Br=0`，因此本轮记录的是当前 MPH 的真实配置，不宣称它已经代表目标实验钢材。
+
+### 原生第二个 Force Calculation Probe
+
+为避免手写 `unTmx` 汇总，脚本在空气中加入小型 `PartitionDomains` 包络域，并创建第二个原生 `ForceCalculation`（`fcal_probe`，`ForceName=force_probe`，选择 `[cylinder domain 3, probe air domain 4]`）。P1 包络为 `x[-1.08,1.20] mm, y/z[-0.55,0.55] mm`，P2 为 `x[-1.10,1.30] mm, y/z[-0.65,0.65] mm`。
+
+| mesh | probe | elements | DOF | min quality | direct fcal1 Fx (mN) | native probe Fx (mN) | abs relative diff |
+|---|---|---:|---:|---:|---:|---:|---:|
+| M_h003 | P1 | 158142 | 212291 | 0.01530 | -8.36013565201 | -9.54257532068 | 14.14% |
+| M_h003 | P2 | 177611 | 237956 | 0.01265 | -11.0472319345 | -12.4214869049 | 12.44% |
+| M_h002 | P1 | 381580 | 510747 | 0.01124 | -10.2869015466 | -11.0680543216 | 7.59% |
+| M_h002 | P2 | 400475 | 535656 | 0.01354 | -17.2672539379 | -18.2096504229 | 5.46% |
+
+四组 Probe 均可编译、建几何、重网格、求解并保存 MPH，但 P1/P2 不满足包络面位置不敏感条件，且包络副本最小单元质量明显低于原始网格。加入包络分区后网格拓扑发生变化，因此这些 `-8~-18 mN` 数值不能直接与原始未分区 `-0.376/-0.226 mN` 作物理幅值比较；它们只能说明该原生 Probe 分支已经运行，并暴露出当前包络几何/网格/Force Calculation 选择仍未形成独立可信力验证。
+
+### 当前判定与代码修复
+
+1. 之前同网格 ON=OFF 的中间结果无效，原因是 OFF 后只恢复材料选择，没有恢复 `mfcs2` 的 `mur_mat/mur/Br_mat/Br`；现已逐项捕获并恢复，最终 ON 与既有直接法结果一致。
+2. 删除源 Solution 数据集或重新 `createAutoSequences("all")` 会在大网格上造成长时间阻塞；现改为保留源 `sol1`，直接 `runAll()`。
+3. `PartitionDomains` 必须设置 `partitionwith="objects"`；其 geometry-operation selection 应使用 `selection("domain").all()`，不能把最终域编号当作输入几何对象标签。
+4. 目前钢片 ON/OFF 控制已通过；原生包络 Probe 已成功执行但位置稳定性未通过。不能据此宣称表面力已经收敛，也不能用 Probe 数值替换正式 Model A 结果。
+
+新增文件：
+
+- [gap030_same_mesh_steel_on_off.csv](../data/gap030_same_mesh_steel_on_off.csv)
+- [modelA_gap030_steel_material_audit.txt](../data/modelA_gap030_steel_material_audit.txt)
+- [gap030_force_probe_native.csv](../data/gap030_force_probe_native.csv)
+- [RunGap030SameMeshControl.java](../scripts/RunGap030SameMeshControl.java)
+- [RunGap030NativeForceProbe.java](../scripts/RunGap030NativeForceProbe.java)
+
 ## gap=0.30 mm：三路交叉验证执行记录（2026-09-11）
 
 本轮首先用 `ProbeMfncStressEnergyVariables.java` 对当前 COMSOL 6.3 模型做了变量自省，确认：
