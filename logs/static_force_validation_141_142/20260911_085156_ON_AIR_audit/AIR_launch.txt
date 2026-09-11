@@ -1,0 +1,2 @@
+PID=20924
+ARGS=-cp "H:\comsolcc;I:\Program Files\COMSOL\COMSOL63\Multiphysics\plugins\*" StaticForceValidation141142 "H:\comsolcc\z120_xsphere26_air200_mesh1.mph" "H:\comsolcc\static_force_validation\141_142\20260911_085156_ON_AIR_audit\AIR_v2" AIR pardiso 0.01 141:0 142:0
