@@ -77,3 +77,32 @@ Model B 尚未启动。它必须在 Model A 的 gap=0.30 mm Holding baseline 通
 本次结论是：两种方法没有得到可比较的 `Fx_volume`，所以 `relative_diff` 不适用，不能据此判断表面法和体积法吻合或不吻合。已确认的数值事实仍是表面法端点加密后变化约 40%，下一步应采用合法空气闭合包络面的 COMSOL 原生 Maxwell 积分或经过本构确认的虚功/能量法，而不是继续猜测体积力变量。
 
 交叉核验文件：[gap030_surface_vs_volume_crosscheck.csv](../data/gap030_surface_vs_volume_crosscheck.csv)；脚本：[RunGap030SurfaceVolumeCrosscheck.java](../scripts/RunGap030SurfaceVolumeCrosscheck.java)。
+
+## gap=0.30 mm：三路交叉验证执行记录（2026-09-11）
+
+本轮首先用 `ProbeMfncStressEnergyVariables.java` 对当前 COMSOL 6.3 模型做了变量自省，确认：
+
+- `mfnc.nToutx_force_magnet` 可作为已配置 Force Calculation 的表面输出；
+- 通用单侧表面应力变量 `mfnc.unTmx`、`mfnc.dnTmx` 可求值；
+- `mfnc.Tmx`、`mfnc.nTmx` 不可直接求值；
+- `mfnc.Wm` 可求值；此前尝试的 `FLtz`、`ForceDensity`、`fex/fLx` 等永磁体体积力密度变量不可用。
+
+直接法读取了已保存的两档 Model A 解，结果与既有报告一致：
+
+| mesh | h (mm) | direct surface Fx (mN) | cancellation ratio | elements | DOF | 状态 |
+|---|---:|---:|---:|---:|---:|---|
+| M_h003 | 0.030 | -0.375970317180 | 287.70 | 194131 | 259754 | 已从保存模型复核 |
+| M_h002 | 0.020 | -0.225873547613 | 486.096747 | 423088 | 565385 | 已从保存模型复核 |
+
+本轮新增的包络面脚本 `RunGap030ThreeWayCrosscheck.java` 已编译，但在首个 `mesh.run()` 阶段长时间高负载未返回；为避免把未完成的包络面结果写成有效数据，已停止自己启动的测试进程。包络面行在新 CSV 中明确标记为 `NOT_COMPLETED_MESH_TIMEOUT`，没有填 0 或复用直接法结果。
+
+`mfnc.Wm` 的快速探针已在 M_h003 的 gap=0.29/0.30 两个已保存解上求值，但只覆盖圆柱域3，不能替代全域、0.295/0.305 两个中心差分点。因此虚功法目前只记录为 `ONE_SIDED_DOMAIN3_PROBE_ONLY`，不能据此给出最终 `Fx_virtual_work`。严格的虚功法仍需补齐两个独立 gap 点及匹配网格。
+
+本轮没有得到三种方法的同网格可比表，因此不能声称 `Fx_hold≈-0.3 mN` 已通过独立方法验证。当前最可靠的结论仍是：直接表面法的净力由大幅相反表面贡献相减形成，且 M_h003→M_h002 仍有约 40% 幅值变化；下一步应优先优化包络面副本的网格重建流程，再完成两档包络面和中心差分虚功法，不能继续把直接法净余量用于精细物理结论。
+
+新增记录：
+
+- 三路交叉验证 CSV：[gap030_threeway_crosscheck.csv](../data/gap030_threeway_crosscheck.csv)
+- 三路验证脚本：[RunGap030ThreeWayCrosscheck.java](../scripts/RunGap030ThreeWayCrosscheck.java)
+- 变量探针：[ProbeMfncStressEnergyVariables.java](../scripts/ProbeMfncStressEnergyVariables.java)
+- 已保存模型只读探针：[ProbeModelAForceEnergy.java](../scripts/ProbeModelAForceEnergy.java)

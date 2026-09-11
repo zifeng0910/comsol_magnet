@@ -1,0 +1,7 @@
+gap_mm,mesh_level,method,envelope_margin_mm,Fx_mN,cancellation_ratio,mesh_elements,DOF,energy_minus_J,energy_center_J,energy_plus_J,energy_dgap_mm,status
+0.300,M_h003,direct_surface,,-0.375970317180,287.70,194131,259754,,,,,CONFIRMED_FROM_SAVED_MODEL
+0.300,M_h002,direct_surface,,-0.225873547613,486.096747,423088,565385,,,,,CONFIRMED_FROM_SAVED_MODEL
+0.300,M_h003,envelope_surface,,,,NA,NA,,,,,NOT_COMPLETED_MESH_TIMEOUT
+0.300,M_h002,envelope_surface,,,,NA,NA,,,,,NOT_COMPLETED_MESH_TIMEOUT
+0.300,M_h003,virtual_work,,,NA,NA,NA,3.509108208701819e-5,3.509544842590764e-5,,,ONE_SIDED_DOMAIN3_PROBE_ONLY
+0.300,M_h002,virtual_work,,,,NA,NA,,,,,NOT_COMPLETED_REQUIRED_GAP_POINTS
