@@ -147,3 +147,26 @@ ON 与 OFF 的横向力差在两档网格下分别为 `-0.128360` 和 `-0.128802
 - 三路验证脚本：[RunGap030ThreeWayCrosscheck.java](../scripts/RunGap030ThreeWayCrosscheck.java)
 - 变量探针：[ProbeMfncStressEnergyVariables.java](../scripts/ProbeMfncStressEnergyVariables.java)
 - 已保存模型只读探针：[ProbeModelAForceEnergy.java](../scripts/ProbeModelAForceEnergy.java)
+
+## 2026-09-11：同网格差分力验证与 Model B 稀疏姿态分解
+
+本轮采用同网格差分作为主要诊断量。Model A 对每个 gap 只重建一次
+几何和网格，然后在完全相同的网格上计算钢片 OFF/ON；修正保持力定义为
+`Fx_hold = Fx_ON - Fx_OFF`。h≈0.03 mm 和 h≈0.02 mm 两套网格的 0.25–0.30
+mm 六个 gap 点均成功，最大相对差异约 0.552%，低于临时 2% 工程门槛。
+这说明钢片差分贡献在该设置下稳定，但不等于原始表面净力已经完成空间收敛。
+
+Model B 在 gap=0.30 mm、x_sphere=26 mm、50 mm 球、alpha=30°下完成
+z=120/140/150 mm 的稀疏固定姿态计算。每个高度只建一次网格，状态定义为
+B0（球/钢片 OFF）、B1（球 OFF/钢片 ON）、B2（球 ON/钢片 ON），并使用
+`Fx_total_corr=B2-B0`。33 个数据行全部成功；9 个相位采样下三种高度的
+`Fx_total_corr` 都为负，360°独立求解与0°闭合误差约为 1e-10 mN 量级。
+
+需要特别区分原始值和修正值：B0 的原始 Fx 随球位置明显变化，但 B1−B0
+在三种高度间仅变化约 0.000277 mN。这表明当前 Force Calculation 存在
+位置相关的共同数值自力/背景项；同网格差分在本受控比较中有效降低了该项，
+但不能把它用于不同网格、不同物理配置或动态问题的任意校正。
+
+本轮保留了此前无效体积力变量、包络 Probe 和直接原始净力的失败证据，
+没有覆盖旧结果。新增完整数据、源码、日志和图表见独立报告
+`reports/SAME_MESH_DIFFERENTIAL_20260911.md`。

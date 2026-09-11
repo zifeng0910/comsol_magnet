@@ -40,3 +40,17 @@
 - 可用方案：只记录已实际读取的 `ForceName=force_magnet`、`selection domain=[3]`、`useAverage=1` 和 StudyStep；用官方 Application Library 的 Force Calculation 示例确认变量可通过 GUI Expression autocomplete 查找，但不把示例中的 `nToutx_FEM_rod` 等名称套到本模型。未取得当前模型的确切应力变量前，不做边界分解或自写 Maxwell 张量。
 - 结果：`force_boundary_contributions.csv` 明确标记 `API_LIMITATION`；闭合空气包络面因本模型 0.28 mm 负 x 间隙及 PartitionDomains 布尔测试停滞，标记 `NOT_BUILT_GEOMETRY_LIMITATION`，没有填零或伪造独立力。
 - 版本：COMSOL 6.3，Windows 11。
+
+## 2026-09-11：同网格差分与 Model B 静态分解
+
+- Model A：每个 gap 只运行一次 `geom.run()` 和 `mesh.run()`，随后在同一网格上
+  计算钢片 OFF/ON。0.25–0.30 mm 六个点在 h≈0.03 mm 与 h≈0.02 mm 下全部成功；
+  两档网格的最大相对差异约 0.552%，0.30 mm 差异约 0.000442 mN。
+- Model B：初次静态尝试失败的两个实际原因是源 ON 属性在 normalize 后才捕获，
+  以及 `zsp1` 没有有效点参考。修复为先 capture 源物理属性、核验/设置 point=20，
+  并为每个 constitutive state/pose 生成独立 Stationary/PARDISO 序列，同时保留
+  同一高度的几何和网格。
+- Model B 稀疏结果：z=120、140、150 mm 共 33 行全部 SUCCESS；用 B1−B0 得到
+  的修正 holding Fx 在三高度为 -0.124852717、-0.124888879、-0.124611939 mN，
+  跨高度变化约 0.000277 mN。B2−B0 在 0/45/…/360°均为负；0/360 闭合误差约
+  1e-10 mN。原始 B0 仍随 z 变化，因此后续解释必须使用明确的同网格差分量。

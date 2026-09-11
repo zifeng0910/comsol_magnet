@@ -1,0 +1,13 @@
+MODEL=H:\comsolcc\z120_xsphere26_air200_mesh1.mph
+MODEL_VARIABLE_COLLECTIONS=[]
+COMPONENT=comp1
+COMP_VARIABLE_COLLECTIONS=[]
+FCAL tag=fcal1 type=ForceCalculation dom=[3] bnd=[]
+FCAL_PROPERTY ForceName=[force_magnet]
+FCAL_PROPERTY TorqueAxis=[1, 0, 0]
+FCAL_PROPERTY TorqueRotationPoint=[0, 0, 0]
+FCAL_PROPERTY useAverage=[1]
+FCAL_PROPERTY StudyStep=[std1/time]
+FCAL_PROPERTY showPhysicsSymbols=[1]
+ALL_RESULT_NUMERICAL=[gev1]
+ALL_RESULT_DATASET=[dset1, cpl1, cln1, cpt1, cpl2, surf1, surf2, cpl3, cpl5, cpl6, cpl7, cln2, cln7, cln3, cln8, cln4, cln5, cln9, cln6, cln10, cln11, dset2, dset3, dset4]

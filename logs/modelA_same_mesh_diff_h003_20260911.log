@@ -1,0 +1,98 @@
+START level=M_h003 source=H:\comsolcc\comsol_magnet\work\modelA_holding_025_030_20260911_fixed\modelA_final.mph gaps=[0.25, 0.26, 0.27, 0.28, 0.29, 0.3]
+DOMAIN_IDENTITY gap=0.250000000000 cylinder=3 steel=2 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0]
+GEOMETRY_RUN_START gap=0.250000000000
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+REFERENCE_EXISTING points=[20]
+MESH_RUN_START gap=0.250000000000
+MESH_LOCKED gap=0.250000000000 elements=194203 min_quality=0.166200000000 cylinder=3 steel=2
+SOLVER_CONFIG study=same_stat_M_h003_gap0p250_115914508819800 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+STEEL_OFF_CONFIG air_domains=[1,2] mfcs2_domains=[2] active_constitutive=RelativePermeability mur=1 remanence=OFF
+SOLVE_START mode=STEEL_OFF sol=sol1
+SOLVE_DONE mode=STEEL_OFF sol=sol1
+STEEL_ON_CONFIG material=mat5 domains=[2] restored_constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+SOLVE_START mode=STEEL_ON sol=sol1
+SOLVE_DONE mode=STEEL_ON sol=sol1
+PAIR_RESULT level=M_h003 gap=0.250000000000 OFF_F=[-0.265773983182,-0.494451427792,-0.320259786578] ON_F=[-0.433319317553,-0.494384659524,-0.320220320033] DIFF_Fx=-0.167545334371 elements=194203 DOF=259858 min_quality=0.166200000000 same_mesh_verified=true
+MODEL_SAVED H:\comsolcc\comsol_magnet\work\modelA_same_mesh_diff_20260911\model_M_h003_gap0p250.mph
+CSV_ROW M_h003,0.250000000000,-0.265773983182,-0.494451427792,-0.320259786578,-0.433319317553,-0.494384659524,-0.320220320033,-0.167545334371,6.67682673963e-05,3.94665443416e-05,194203,259858,0.166200000000,true,SUCCESS
+DOMAIN_IDENTITY gap=0.260000000000 cylinder=3 steel=2 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0]
+GEOMETRY_RUN_START gap=0.260000000000
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+REFERENCE_EXISTING points=[20]
+MESH_RUN_START gap=0.260000000000
+MESH_LOCKED gap=0.260000000000 elements=194308 min_quality=0.162000000000 cylinder=3 steel=2
+SOLVER_CONFIG study=same_stat_M_h003_gap0p260_115947958118100 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+STEEL_OFF_CONFIG air_domains=[1,2] mfcs2_domains=[2] active_constitutive=RelativePermeability mur=1 remanence=OFF
+SOLVE_START mode=STEEL_OFF sol=sol1
+SOLVE_DONE mode=STEEL_OFF sol=sol1
+STEEL_ON_CONFIG material=mat5 domains=[2] restored_constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+SOLVE_START mode=STEEL_ON sol=sol1
+SOLVE_DONE mode=STEEL_ON sol=sol1
+PAIR_RESULT level=M_h003 gap=0.260000000000 OFF_F=[0.0269712792210,-0.546252858284,-0.0477912212463] ON_F=[-0.131474252918,-0.546187774581,-0.0477748606935] DIFF_Fx=-0.158445532139 elements=194308 DOF=259965 min_quality=0.162000000000 same_mesh_verified=true
+MODEL_SAVED H:\comsolcc\comsol_magnet\work\modelA_same_mesh_diff_20260911\model_M_h003_gap0p260.mph
+CSV_ROW M_h003,0.260000000000,0.0269712792210,-0.546252858284,-0.0477912212463,-0.131474252918,-0.546187774581,-0.0477748606935,-0.158445532139,6.50837023364e-05,1.63605527494e-05,194308,259965,0.162000000000,true,SUCCESS
+DOMAIN_IDENTITY gap=0.270000000000 cylinder=3 steel=2 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0]
+GEOMETRY_RUN_START gap=0.270000000000
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+REFERENCE_EXISTING points=[20]
+MESH_RUN_START gap=0.270000000000
+MESH_LOCKED gap=0.270000000000 elements=193474 min_quality=0.0882500000000 cylinder=3 steel=2
+SOLVER_CONFIG study=same_stat_M_h003_gap0p270_115978919422300 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+STEEL_OFF_CONFIG air_domains=[1,2] mfcs2_domains=[2] active_constitutive=RelativePermeability mur=1 remanence=OFF
+SOLVE_START mode=STEEL_OFF sol=sol1
+SOLVE_DONE mode=STEEL_OFF sol=sol1
+STEEL_ON_CONFIG material=mat5 domains=[2] restored_constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+SOLVE_START mode=STEEL_ON sol=sol1
+SOLVE_DONE mode=STEEL_ON sol=sol1
+PAIR_RESULT level=M_h003 gap=0.270000000000 OFF_F=[-0.0156619983697,-0.280584443305,0.253375258072] ON_F=[-0.165530337527,-0.280539657893,0.253382577326] DIFF_Fx=-0.149868339158 elements=193474 DOF=258861 min_quality=0.0882500000000 same_mesh_verified=true
+MODEL_SAVED H:\comsolcc\comsol_magnet\work\modelA_same_mesh_diff_20260911\model_M_h003_gap0p270.mph
+CSV_ROW M_h003,0.270000000000,-0.0156619983697,-0.280584443305,0.253375258072,-0.165530337527,-0.280539657893,0.253382577326,-0.149868339158,4.47854121123e-05,7.31925398934e-06,193474,258861,0.0882500000000,true,SUCCESS
+DOMAIN_IDENTITY gap=0.280000000000 cylinder=3 steel=2 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0]
+GEOMETRY_RUN_START gap=0.280000000000
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+REFERENCE_EXISTING points=[20]
+MESH_RUN_START gap=0.280000000000
+MESH_LOCKED gap=0.280000000000 elements=194017 min_quality=0.177200000000 cylinder=3 steel=2
+SOLVER_CONFIG study=same_stat_M_h003_gap0p280_116007893333800 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+STEEL_OFF_CONFIG air_domains=[1,2] mfcs2_domains=[2] active_constitutive=RelativePermeability mur=1 remanence=OFF
+SOLVE_START mode=STEEL_OFF sol=sol1
+SOLVE_DONE mode=STEEL_OFF sol=sol1
+STEEL_ON_CONFIG material=mat5 domains=[2] restored_constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+SOLVE_START mode=STEEL_ON sol=sol1
+SOLVE_DONE mode=STEEL_ON sol=sol1
+PAIR_RESULT level=M_h003 gap=0.280000000000 OFF_F=[-0.324883642196,-0.129390260870,0.290193281808] ON_F=[-0.467183151583,-0.129351553981,0.290208531735] DIFF_Fx=-0.142299509387 elements=194017 DOF=259614 min_quality=0.177200000000 same_mesh_verified=true
+MODEL_SAVED H:\comsolcc\comsol_magnet\work\modelA_same_mesh_diff_20260911\model_M_h003_gap0p280.mph
+CSV_ROW M_h003,0.280000000000,-0.324883642196,-0.129390260870,0.290193281808,-0.467183151583,-0.129351553981,0.290208531735,-0.142299509387,3.87068892858e-05,1.52499274883e-05,194017,259614,0.177200000000,true,SUCCESS
+DOMAIN_IDENTITY gap=0.290000000000 cylinder=3 steel=2 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0]
+GEOMETRY_RUN_START gap=0.290000000000
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+REFERENCE_EXISTING points=[20]
+MESH_RUN_START gap=0.290000000000
+MESH_LOCKED gap=0.290000000000 elements=193872 min_quality=0.195100000000 cylinder=3 steel=2
+SOLVER_CONFIG study=same_stat_M_h003_gap0p290_116036426477100 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+STEEL_OFF_CONFIG air_domains=[1,2] mfcs2_domains=[2] active_constitutive=RelativePermeability mur=1 remanence=OFF
+SOLVE_START mode=STEEL_OFF sol=sol1
+SOLVE_DONE mode=STEEL_OFF sol=sol1
+STEEL_ON_CONFIG material=mat5 domains=[2] restored_constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+SOLVE_START mode=STEEL_ON sol=sol1
+SOLVE_DONE mode=STEEL_ON sol=sol1
+PAIR_RESULT level=M_h003 gap=0.290000000000 OFF_F=[0.0230401121348,0.536192783926,-0.384439215779] ON_F=[-0.112064147172,0.536228325058,-0.384461497897] DIFF_Fx=-0.135104259307 elements=193872 DOF=259391 min_quality=0.195100000000 same_mesh_verified=true
+MODEL_SAVED H:\comsolcc\comsol_magnet\work\modelA_same_mesh_diff_20260911\model_M_h003_gap0p290.mph
+CSV_ROW M_h003,0.290000000000,0.0230401121348,0.536192783926,-0.384439215779,-0.112064147172,0.536228325058,-0.384461497897,-0.135104259307,3.55411321905e-05,-2.22821176432e-05,193872,259391,0.195100000000,true,SUCCESS
+DOMAIN_IDENTITY gap=0.300000000000 cylinder=3 steel=2 cylinder_bbox=[-1.0, 1.0, -0.4000000059604645, 0.4000000059604645, -0.4000000059604645, 0.4000000059604645] steel_bbox=[-1.600000023841858, -1.2999999523162842, -2.0, 2.0, -2.0, 2.0]
+GEOMETRY_RUN_START gap=0.300000000000
+STEEL_ON_CAPTURE constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+REFERENCE_EXISTING points=[20]
+MESH_RUN_START gap=0.300000000000
+MESH_LOCKED gap=0.300000000000 elements=194131 min_quality=0.160600000000 cylinder=3 steel=2
+SOLVER_CONFIG study=same_stat_M_h003_gap0p300_116061651098500 sol=sol1 direct=pardiso fullyCoupled=dDef stol=1e-6
+STEEL_OFF_CONFIG air_domains=[1,2] mfcs2_domains=[2] active_constitutive=RelativePermeability mur=1 remanence=OFF
+SOLVE_START mode=STEEL_OFF sol=sol1
+SOLVE_DONE mode=STEEL_OFF sol=sol1
+STEEL_ON_CONFIG material=mat5 domains=[2] restored_constitutive=RelativePermeability mur_mat=from_mat mur=1 Br_mat=from_mat Br=0
+SOLVE_START mode=STEEL_ON sol=sol1
+SOLVE_DONE mode=STEEL_ON sol=sol1
+PAIR_RESULT level=M_h003 gap=0.300000000000 OFF_F=[-0.247610304809,-0.192087673212,0.0340978041925] ON_F=[-0.375970317168,-0.192057256300,0.0341205124406] DIFF_Fx=-0.128360012359 elements=194131 DOF=259754 min_quality=0.160600000000 same_mesh_verified=true
+MODEL_SAVED H:\comsolcc\comsol_magnet\work\modelA_same_mesh_diff_20260911\model_M_h003_gap0p300.mph
+CSV_ROW M_h003,0.300000000000,-0.247610304809,-0.192087673212,0.0340978041925,-0.375970317168,-0.192057256300,0.0341205124406,-0.128360012359,3.04169117476e-05,2.27082480831e-05,194131,259754,0.160600000000,true,SUCCESS
+FINISH level=M_h003 csv=H:\comsolcc\comsol_magnet\work\modelA_same_mesh_diff_20260911\holding_force_same_mesh_diff_025_030.csv
