@@ -1,0 +1,2 @@
+mode,z_mm,phi_deg,ux,uy,uz,solution,linear_solver,tolerance,mesh_elements,dofs,Fx_N,Fx_mN,Fx_mN_from_N,status,reproducibility,mesh_validation
+ON,141.00000000,0.00000000,0.500000000000,0.866025403784,-0.00000000000,sol1,pardiso,stol=0.01,91453,NA,-0.000567850748989,-0.567850748989,-0.567850748989,SUCCESS,UNKNOWN,UNKNOWN

@@ -1,0 +1,325 @@
+SOURCE=H:\comsolcc\z120_xsphere26_air200_mesh1.mph
+PHYSICS=[mfnc]
+PARAM z_sphere=120[mm] x_sphere=26[mm] alpha=30[deg]
+PARAM omega=10*pi [rad/s] T_cycle=0.2[s]
+REMOVED_COMMON tag=rot1 type=RotatingDomain reason=static_fixed_geometry_branch
+AIR_OVERRIDE material=mat4 domain=[1,4] relpermeability=1 Br=0(no RemanentFluxDensity group) mfc2_direction=preserved_nonzero
+MESH_MODE=M2 global_hauto=4 local_solid_hauto=1
+GEOM_MESH_DONE z=141.0 elements=91453
+MFC2_DOMAIN_SELECTION=[4]
+FORCECAL_DOMAIN_SELECTION=[3]
+STEEL_DOMAIN_SELECTION=[2]
+N52_DOMAIN_SELECTION=[3]
+AIR_DOMAIN_SELECTION=[1, 4]
+MATERIALS=[mat4, mat3, mat5]
+MFC2_GEOMETRY volume_mm3=65281.8027639 bbox_mm=[xmin=1.00000000,xmax=51.0000000,ymin=-25.0000000,ymax=25.0000000,zmin=116.000000,zmax=166.000000] center_mm=[26.0000000,0.00000000,141.000000] radius_from_bbox_mm=25.0000000
+FORCECAL_GEOMETRY volume_mm3=0.998862443669 bbox_mm=[xmin=-1.00000000,xmax=1.00000000,ymin=-0.400000006,ymax=0.400000006,zmin=-0.400000006,zmax=0.400000006] center_mm=[0.00000000,0.00000000,0.00000000]
+STEEL_GEOMETRY volume_mm3=3.68720782984 bbox_mm=[xmin=-1.58000004,xmax=-1.27999997,ymin=-2.00000000,ymax=2.00000000,zmin=-2.00000000,zmax=2.00000000] center_mm=[-1.43000001,0.00000000,0.00000000]
+AIR_GEOMETRY volume_mm3=33499332.6226 bbox_mm=[xmin=-200.000000,xmax=200.000000,ymin=-200.000000,ymax=200.000000,zmin=-200.000000,zmax=200.000000]
+X_GAP_STEEL_TO_CYLINDER_MM=0.279999971390
+SPHERE_CENTER_PARAM_MM=[26.0000000000,0,141.000000000] radius_param_mm=25
+GEOM_FEATURE tag=sph1 type=Sphere pos=x_sphere, 0, z_sphere r=25 h=<not-readable> model_length_unit=mm
+GEOM_FEATURE_PARAM_EVAL_SI tag=sph1 pos=[0.026000000000000002,0.0,0.14100000000000001]
+GEOM_FEATURE tag=cyl1 type=Cylinder pos=0, 0, Z_sphere r=25 h=60 model_length_unit=mm
+GEOM_FEATURE_PARAM_EVAL_SI tag=cyl1 pos=[0.0,0.0,NaN]
+GEOM_FEATURE tag=cyl2 type=Cylinder pos=0, 0, -(2[mm])/2 r=0.4[mm] h=2[mm] model_length_unit=mm
+GEOM_FEATURE_PARAM_EVAL_SI tag=cyl2 pos=[0.0,0.0,-0.001]
+GEOM_FEATURE tag=cyl3 type=Cylinder pos=0, 0, -(h_cyl3)/2 r=2 h=h_cyl3 model_length_unit=mm
+GEOM_FEATURE_PARAM_EVAL_SI tag=cyl3 pos=[0.0,0.0,-1.5E-4]
+GEOM_FEATURE tag=sph_air_domain type=Sphere pos=0, 0, 0 r=200[mm] h=<not-readable> model_length_unit=mm
+GEOM_FEATURE_PARAM_EVAL_SI tag=sph_air_domain pos=[0.0,0.0,0.0]
+GEOMETRY_CHECK=PASS
+PHYSICS_FEATURE tag=mfc1 type=MagneticFluxConservationFluid dim3=[1]
+  ConstitutiveRelationBH=RelativePermeability
+  M=[0, 0, 0]
+  e_crel_BH_RemanentFluxDensity=[1, 0, 0]
+  mur_mat=from_mat
+  mur=1
+  murPrim_mat=from_mat
+  murPrim=1
+  murBis_mat=from_mat
+  murBis=0
+  mur_crel_BH_RemanentFluxDensity_mat=from_mat
+  mur_crel_BH_RemanentFluxDensity=1
+  normBr_crel_BH_RemanentFluxDensity_mat=from_mat
+  normBr_crel_BH_RemanentFluxDensity=0
+  normB_mat=from_mat
+  normB=mu0_const*mfnc.normH
+  Wpm_BHC_mat=from_mat
+  Wpm_BHC=(0.5*mfnc.normB)*mfnc.normH
+  material=none
+  M0=[0, 0, 0]
+  GPorder=auto
+  inStationaryStudy=TransientInitialization
+  MsJA_mat=from_mat
+  MsJA=1e6[A/m]
+  aJA_mat=from_mat
+  aJA=200[A/m]
+  kJA_mat=from_mat
+  kJA=300[A/m]
+  cJA_mat=from_mat
+  cJA=0.7
+  alphaJA_mat=from_mat
+  alphaJA=5e-4
+  eHc=[1, 0, 0]
+  Hc_mat=from_mat
+  Hc=1e4
+  normHs_mat=from_mat
+  normHs=mfnc.normB/mu0_const
+  normBpm_mat=from_mat
+  normBpm=mu0_const*mfnc.normHs
+  Wpm_NPM_mat=from_mat
+  Wpm_NPM=(0.5*mfnc.normB)*mfnc.normHs
+  minput_temperature_src=fromCommonDef
+  minput_temperature=293.15[K]
+  editModelInputs=0
+  minput_magneticfield_src=userdef
+  minput_magneticfield=[0, 0, 0]
+  minput_shiftedmagneticfield_src=userdef
+  minput_shiftedmagneticfield=[0, 0, 0]
+  materialType=nonSolid
+  coordinateSystem=GlobalSystem
+  StudyStep=std_z115p00_static/stat
+  showPhysicsSymbols=1
+  AllowSolidMaterials=0
+PHYSICS_FEATURE tag=mi1 type=MagneticInsulation dim2=[1, 2, 3, 4, 20, 21, 22, 23]
+  StudyStep=std_z115p00_static/stat
+  showPhysicsSymbols=1
+  pairContrib=fallback
+PHYSICS_FEATURE tag=init1 type=init dim3=[1, 2, 3, 4]
+  Vm=0
+  StudyStep=std_z115p00_static/stat
+PHYSICS_FEATURE tag=mfc2 type=MagneticFluxConservationFluid dim3=[4]
+  ConstitutiveRelationBH=RemanentFluxDensity
+  M=[0, 0, 0]
+  e_crel_BH_RemanentFluxDensity=[0, cos(alpha), sin(alpha)]
+  mur_mat=from_mat
+  mur=1
+  murPrim_mat=from_mat
+  murPrim=1
+  murBis_mat=from_mat
+  murBis=0
+  mur_crel_BH_RemanentFluxDensity_mat=from_mat
+  mur_crel_BH_RemanentFluxDensity=1
+  normBr_crel_BH_RemanentFluxDensity_mat=userdef
+  normBr_crel_BH_RemanentFluxDensity=1.46[T]
+  normB_mat=from_mat
+  normB=mu0_const*mfnc.normH
+  Wpm_BHC_mat=from_mat
+  Wpm_BHC=(0.5*mfnc.normB)*mfnc.normH
+  material=none
+  M0=[0, 0, 0]
+  GPorder=auto
+  inStationaryStudy=TransientInitialization
+  MsJA_mat=from_mat
+  MsJA=1e6[A/m]
+  aJA_mat=from_mat
+  aJA=200[A/m]
+  kJA_mat=from_mat
+  kJA=300[A/m]
+  cJA_mat=from_mat
+  cJA=0.7
+  alphaJA_mat=from_mat
+  alphaJA=5e-4
+  eHc=[1, 0, 0]
+  Hc_mat=from_mat
+  Hc=1e4
+  normHs_mat=from_mat
+  normHs=mfnc.normB/mu0_const
+  normBpm_mat=from_mat
+  normBpm=mu0_const*mfnc.normHs
+  Wpm_NPM_mat=from_mat
+  Wpm_NPM=(0.5*mfnc.normB)*mfnc.normHs
+  minput_temperature_src=fromCommonDef
+  minput_temperature=293.15[K]
+  editModelInputs=0
+  minput_magneticfield_src=userdef
+  minput_magneticfield=[0, 0, 0]
+  minput_shiftedmagneticfield_src=userdef
+  minput_shiftedmagneticfield=[0, 0, 0]
+  materialType=nonSolid
+  coordinateSystem=GlobalSystem
+  StudyStep=std_z115p00_static/stat
+  showPhysicsSymbols=1
+  AllowSolidMaterials=1
+PHYSICS_FEATURE tag=zsp1 type=ZeroMagneticScalarPotential
+  constraintType=symmetricConstraint
+  constraintMethod=elemental
+  StudyStep=std_z115p00_static/stat
+  showPhysicsSymbols=1
+  constraintOptions=pointwiseConstraints
+  pairContrib=fallback
+MAGNETIC_SCALAR_POTENTIAL_REFERENCE tag=zsp1 boundary_selection=[] status=NO_EXPLICIT_SELECTION
+PHYSICS_FEATURE tag=mfcs1 type=MagneticFluxConservationSolid dim3=[3]
+  materialType=solid
+  AllowSolidMaterials=1
+  ConstitutiveRelationBH=RemanentFluxDensity
+  M=[0, 0, 0]
+  e_crel_BH_RemanentFluxDensity=[1, 0, 0]
+  mur_mat=from_mat
+  mur=1
+  murPrim_mat=from_mat
+  murPrim=1
+  murBis_mat=from_mat
+  murBis=0
+  mur_crel_BH_RemanentFluxDensity_mat=from_mat
+  mur_crel_BH_RemanentFluxDensity=1
+  normBr_crel_BH_RemanentFluxDensity_mat=userdef
+  normBr_crel_BH_RemanentFluxDensity=1.43[T]
+  normB_mat=from_mat
+  normB=mu0_const*mfnc.normH
+  Wpm_BHC_mat=from_mat
+  Wpm_BHC=(0.5*mfnc.normB)*mfnc.normH
+  material=none
+  M0=[0, 0, 0]
+  GPorder=auto
+  inStationaryStudy=TransientInitialization
+  MsJA_mat=from_mat
+  MsJA=1e6[A/m]
+  aJA_mat=from_mat
+  aJA=200[A/m]
+  kJA_mat=from_mat
+  kJA=300[A/m]
+  cJA_mat=from_mat
+  cJA=0.7
+  alphaJA_mat=from_mat
+  alphaJA=5e-4
+  eHc=[1, 0, 0]
+  Hc_mat=from_mat
+  Hc=1e4
+  normHs_mat=from_mat
+  normHs=mfnc.normB/mu0_const
+  normBpm_mat=from_mat
+  normBpm=mu0_const*mfnc.normHs
+  Wpm_NPM_mat=from_mat
+  Wpm_NPM=(0.5*mfnc.normB)*mfnc.normHs
+  minput_temperature_src=fromCommonDef
+  minput_temperature=293.15[K]
+  editModelInputs=0
+  minput_magneticfield_src=userdef
+  minput_magneticfield=[0, 0, 0]
+  minput_shiftedmagneticfield_src=userdef
+  minput_shiftedmagneticfield=[0, 0, 0]
+  coordinateSystem=GlobalSystem
+  StudyStep=std_z115p00_static/stat
+  showPhysicsSymbols=1
+PHYSICS_FEATURE tag=fcal1 type=ForceCalculation dim3=[3]
+  ForceName=force_magnet
+  TorqueAxis=[1, 0, 0]
+  TorqueRotationPoint=[0, 0, 0]
+  useAverage=1
+  StudyStep=std_z115p00_static/stat
+  showPhysicsSymbols=1
+PHYSICS_FEATURE tag=mfcs2 type=MagneticFluxConservationSolid dim3=[2]
+  materialType=solid
+  AllowSolidMaterials=1
+  ConstitutiveRelationBH=RelativePermeability
+  M=[0, 0, 0]
+  e_crel_BH_RemanentFluxDensity=[1, 0, 0]
+  mur_mat=from_mat
+  mur=1
+  murPrim_mat=from_mat
+  murPrim=1
+  murBis_mat=from_mat
+  murBis=0
+  mur_crel_BH_RemanentFluxDensity_mat=from_mat
+  mur_crel_BH_RemanentFluxDensity=1
+  normBr_crel_BH_RemanentFluxDensity_mat=from_mat
+  normBr_crel_BH_RemanentFluxDensity=0
+  normB_mat=from_mat
+  normB=mu0_const*mfnc.normH
+  Wpm_BHC_mat=from_mat
+  Wpm_BHC=(0.5*mfnc.normB)*mfnc.normH
+  material=none
+  M0=[0, 0, 0]
+  GPorder=auto
+  inStationaryStudy=TransientInitialization
+  MsJA_mat=from_mat
+  MsJA=1e6[A/m]
+  aJA_mat=from_mat
+  aJA=200[A/m]
+  kJA_mat=from_mat
+  kJA=300[A/m]
+  cJA_mat=from_mat
+  cJA=0.7
+  alphaJA_mat=from_mat
+  alphaJA=5e-4
+  eHc=[1, 0, 0]
+  Hc_mat=from_mat
+  Hc=1e4
+  normHs_mat=from_mat
+  normHs=mfnc.normB/mu0_const
+  normBpm_mat=from_mat
+  normBpm=mu0_const*mfnc.normHs
+  Wpm_NPM_mat=from_mat
+  Wpm_NPM=(0.5*mfnc.normB)*mfnc.normHs
+  minput_temperature_src=fromCommonDef
+  minput_temperature=293.15[K]
+  editModelInputs=0
+  minput_magneticfield_src=userdef
+  minput_magneticfield=[0, 0, 0]
+  minput_shiftedmagneticfield_src=userdef
+  minput_shiftedmagneticfield=[0, 0, 0]
+  coordinateSystem=GlobalSystem
+  StudyStep=std_z115p00_static/stat
+  showPhysicsSymbols=1
+MAGNETIC_INSULATION_BOUNDARIES=[1, 2, 3, 4, 20, 21, 22, 23]
+MATERIAL tag=mat4 label=Air domains=[1, 4]
+  GROUP=def type=def
+    thermalexpansioncoefficient=alpha_p(pA,T)
+    molarmass=0.02897[kg/mol]
+    bulkviscosity=muB(T)
+    relpermeability=1
+    relpermittivity=1
+    dynamicviscosity=eta(T)
+    ratioofspecificheat=1.4
+    electricconductivity=0[S/m]
+    heatcapacity=Cp(T)
+    density=rho(pA,T)
+    thermalconductivity=k(T)
+    soundspeed=cs(T)
+  GROUP=RefractiveIndex type=RefractiveIndex
+    n=1
+    ki=0
+  GROUP=NonlinearModel type=NonlinearModel
+    BA=def.gamma-1
+  GROUP=idealGas type=idealGas
+    Rs=R_const/Mn
+    heatcapacity=Cp(T)
+    ratioofspecificheat=1.4
+    molarmass=0.02897[kg/mol]
+MATERIAL tag=mat3 label=N52 (Sintered NdFeB) domains=[3]
+  GROUP=def type=def
+    electricconductivity=1/1.4[uohm*m]
+    relpermittivity=1
+    density=7500
+  GROUP=RemanentFluxDensity type=RemanentFluxDensity
+    murec=1.05
+    normBr=1.46[T]
+  GROUP=Enu type=Enu
+    E=160[Gpa]
+    nu=0.24
+MATERIAL tag=mat5 label=UNS S30415 [solid] domains=[2]
+  GROUP=def type=def
+    thermalconductivity=k(T)
+    resistivity=res(T)
+    thermalexpansioncoefficient=(alpha(T)+(Tempref-293[K])*if(abs(T-Tempref)>1e-3,(alpha(T)-alpha(Tempref))/(T-Tempref),d(alpha(T),T)))/(1+alpha(Tempref)*(Tempref-293[K]))
+    heatcapacity=C(T)
+    electricconductivity=sigma(T)
+    density=rho(T)
+    TD=TD(T)
+    relpermeability=1.01
+  GROUP=ThermalExpansion type=ThermalExpansion
+    alphatan=CTE(T)
+    dL=(dL(T)-dL(Tempref))/(1+dL(Tempref))
+  GROUP=Enu type=Enu
+    E=E(T)
+    nu=
+POSE phi_deg=0.00000000000 expected_unit_magnetization=[0.500000000000,0.866025403784,-0.00000000000] model_alpha_rad=0.523598775598
+MODEL_MAGNETIZATION_EVAL=[0.500000000000,0.866025403784,-0.00000000000]
+STATIONARY_TOL study=st_z141p000_p0p00000.stat usestol=on stol=0.01
+SOLVER_CONFIG sol=sol1 s1.control=stat fc1.linsolver=dDef dDef.linsolver=pardiso
+CONFIGURED_SAVED z=141.0 phi=0.0 study=st_z141p000_p0p00000 sol=sol1
+SOLVED z=141.0 phi=0.0 sol=sol1
+RESULT AIR,141.00000000,0.00000000,0.500000000000,0.866025403784,-0.00000000000,sol1,pardiso,stol=0.01,91453,NA,-0.000568176035326,-0.568176035326,-0.568176035326,SUCCESS,UNKNOWN,UNKNOWN
+FINISH results=H:\comsolcc\static_force_validation\141_142\20260911_090558_M2_AIR_141\static_force_results.csv

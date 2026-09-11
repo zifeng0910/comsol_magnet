@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * 固定姿态 Stationary 磁力验证。
- * 参数格式：source.mph outdir z:phi [z:phi ...]
+ * 参数格式：source.mph outdir mode(ON|AIR) linearSolver stol [meshMode(M0|M1)] z:phi [z:phi ...]
  * 例如：source.mph out 141:0 142:0 141:180 142:180 141:360 142:360
  * 每个 z 只重建一次几何/网格；同一 z 的不同 phi 复用该网格，
  * 但每个姿态都新建独立 Stationary study/solution 并重新求解。
@@ -271,7 +271,7 @@ public class StaticForceValidation141142 {
   }
 
   public static void main(String[] args) {
-    if (args.length < 6) throw new IllegalArgumentException("Usage: source.mph outdir mode(ON|AIR) linearSolver stol z:phi [z:phi ...]");
+    if (args.length < 6) throw new IllegalArgumentException("Usage: source.mph outdir mode(ON|AIR) linearSolver stol [meshMode(M0|M1)] z:phi [z:phi ...]");
     String source = args[0]; Path out = Paths.get(args[1]); String mode = args[2]; String linearSolver = args[3]; String stol = args[4];
     try {
       Files.createDirectories(out);
@@ -287,10 +287,14 @@ public class StaticForceValidation141142 {
       if ("AIR".equalsIgnoreCase(mode)) applyAirBallOverride(m);
       else if (!"ON".equalsIgnoreCase(mode)) throw new IllegalArgumentException("mode must be ON or AIR");
       m.param().set("phi", "0[deg]");
+      // 为兼容旧命令，meshMode 可省略；M0/M1/M2 对应全局空气 hauto=6/5/4，固体局部始终 hauto=1。
+      String meshMode = "M0"; int poseStart = 5;
+      if (args.length > 5 && ("M0".equalsIgnoreCase(args[5]) || "M1".equalsIgnoreCase(args[5]) || "M2".equalsIgnoreCase(args[5]))) { meshMode = args[5].toUpperCase(Locale.ROOT); poseStart = 6; }
+      log("MESH_MODE=" + meshMode + " global_hauto=" + ("M1".equals(meshMode) ? "5" : ("M2".equals(meshMode) ? "4" : "6")) + " local_solid_hauto=1");
       PrintWriter csv = new PrintWriter(Files.newBufferedWriter(out.resolve("static_force_results.csv")));
       csv.println("mode,z_mm,phi_deg,ux,uy,uz,solution,linear_solver,tolerance,mesh_elements,dofs,Fx_N,Fx_mN,Fx_mN_from_N,status,reproducibility,mesh_validation");
       double activeZ = Double.NaN; int elements = 0;
-      for (int i = 5; i < args.length; i++) {
+      for (int i = poseStart; i < args.length; i++) {
         String[] pair = args[i].split(":");
         if (pair.length != 2) throw new IllegalArgumentException("Bad pose: " + args[i]);
         double z = Double.parseDouble(pair[0]); double phi = Double.parseDouble(pair[1]);
@@ -298,7 +302,7 @@ public class StaticForceValidation141142 {
           m.param().set("z_sphere", String.format(LOCALE, "%.12g[mm]", z));
           m.component("comp1").geom("geom1").run();
           MeshSequence mesh = m.component("comp1").mesh("mesh1");
-          mesh.feature("size").set("hauto", 6);
+          mesh.feature("size").set("hauto", "M1".equals(meshMode) ? 5 : ("M2".equals(meshMode) ? 4 : 6));
           String local = "nearfieldfine";
           try { mesh.feature(local); } catch (Throwable e) { mesh.feature().create(local, "Size"); }
           mesh.feature(local).selection().geom("geom1", 3);
