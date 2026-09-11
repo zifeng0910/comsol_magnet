@@ -1,0 +1,62 @@
+REMOVED_ROTATING_DOMAIN=rot1
+OUTER_RADIUS_SET radius_mm=300.000000000
+POSE z_mm=140.000000000 phi_deg=90.0000000000 direction_eval=[0.49999999999999994, 5.3028761936245346E-17, -0.8660254037844387]
+ZSP_REFERENCE_BEFORE point_selection=[] boundary_selection=[]
+ZSP_REFERENCE_CANDIDATE point=20 coord_model_unit=[-1.0, 0.0, 0.4000000000000001] npoints=37
+ZSP_REFERENCE_AFTER point_selection=[20] coord_model_unit=[-1.0, 0.0, 0.4000000000000001] status=EXPLICIT_FIXED_POINT
+LOCAL_BOUNDARY_SELECTION tag=sel_nf_boundary_l1 count=16 ids=[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 24]
+LOCAL_SIZE_CONFIG level=L1 hmax_mm=0.0470000000000 hmin_mm=0.0156666666667 selected_boundaries=16
+MESH_DONE level=L1 elements=558418
+GEOM_ENTITIES=[37, 60, 32, 4]
+DOMAIN id=1 volume_mm3=112995041.315 bbox_mm=[-300.000000,300.000000,-300.000000,300.000000,-300.000000,300.000000] center=[0.00000000,0.00000000,0.00000000]
+DOMAIN id=2 volume_mm3=3.68720782984 bbox_mm=[-1.58000004,-1.27999997,-2.00000000,2.00000000,-2.00000000,2.00000000] center=[-1.43000001,0.00000000,0.00000000]
+DOMAIN id=3 volume_mm3=0.998862443669 bbox_mm=[-1.00000000,1.00000000,-0.400000006,0.400000006,-0.400000006,0.400000006] center=[0.00000000,0.00000000,0.00000000]
+DOMAIN id=4 volume_mm3=65217.3528111 bbox_mm=[1.00000000,51.0000000,-25.0000000,25.0000000,115.000000,165.000000] center=[26.0000000,0.00000000,140.000000]
+MATERIAL tag=mat4 label=Air domains=[1]
+MATERIAL tag=mat3 label=N52 (Sintered NdFeB) domains=[3, 4]
+MATERIAL tag=mat5 label=UNS S30415 [solid] domains=[2]
+PHYSICS tag=mfc1 type=MagneticFluxConservationFluid domains=[1] boundaries=[]
+PHYSICS tag=mi1 type=MagneticInsulation domains=[] boundaries=[1, 2, 3, 4, 20, 21, 22, 23]
+PHYSICS tag=init1 type=init domains=[1, 2, 3, 4] boundaries=[]
+PHYSICS tag=mfc2 type=MagneticFluxConservationFluid domains=[4] boundaries=[]
+PHYSICS tag=zsp1 type=ZeroMagneticScalarPotential domains=[] boundaries=[]
+PHYSICS tag=mfcs1 type=MagneticFluxConservationSolid domains=[3] boundaries=[]
+PHYSICS tag=fcal1 type=ForceCalculation domains=[3] boundaries=[]
+PHYSICS tag=mfcs2 type=MagneticFluxConservationSolid domains=[2] boundaries=[]
+SOLVER_EFFECTIVE study=st_audit_l1_z140_p90 solver=pardiso fullycoupled_to=dDef usestol=on stol=1e-6
+SOLVE_START level=L1 z=140 phi=90 sol=sol1
+FORCE_READ expr=mfnc.Forcex_force_magnet unit=N value=4.85686846959e-05
+FORCE_READ expr=mfnc.Forcex_force_magnet unit=mN value=0.0485686846959
+AUDIT_RESULT level=L1 z=140 phi=90 hgap_mm=0.04700000 elements=558418 size=[745419, 1] Fx_N=4.85686846959e-05 Fx_mN=0.0485686846959 status=SUCCESS
+OUTER_RADIUS_FINISH radius_mm=300.000000000 elements=558418
+REMOVED_ROTATING_DOMAIN=rot1
+OUTER_RADIUS_SET radius_mm=400.000000000
+POSE z_mm=140.000000000 phi_deg=90.0000000000 direction_eval=[0.49999999999999994, 5.3028761936245346E-17, -0.8660254037844387]
+ZSP_REFERENCE_BEFORE point_selection=[] boundary_selection=[]
+ZSP_REFERENCE_CANDIDATE point=20 coord_model_unit=[-1.0, 0.0, 0.4000000000000001] npoints=37
+ZSP_REFERENCE_AFTER point_selection=[20] coord_model_unit=[-1.0, 0.0, 0.4000000000000001] status=EXPLICIT_FIXED_POINT
+LOCAL_BOUNDARY_SELECTION tag=sel_nf_boundary_l1 count=16 ids=[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 24]
+LOCAL_SIZE_CONFIG level=L1 hmax_mm=0.0470000000000 hmin_mm=0.0156666666667 selected_boundaries=16
+MESH_DONE level=L1 elements=559638
+GEOM_ENTITIES=[37, 60, 32, 4]
+DOMAIN id=1 volume_mm3=267929586.509 bbox_mm=[-400.000000,400.000000,-400.000000,400.000000,-400.000000,400.000000] center=[0.00000000,0.00000000,0.00000000]
+DOMAIN id=2 volume_mm3=3.68720782984 bbox_mm=[-1.58000004,-1.27999997,-2.00000000,2.00000000,-2.00000000,2.00000000] center=[-1.43000001,0.00000000,0.00000000]
+DOMAIN id=3 volume_mm3=0.998862443669 bbox_mm=[-1.00000000,1.00000000,-0.400000006,0.400000006,-0.400000006,0.400000006] center=[0.00000000,0.00000000,0.00000000]
+DOMAIN id=4 volume_mm3=65107.2741148 bbox_mm=[1.00000000,51.0000000,-25.0000000,25.0000000,115.000000,165.000000] center=[26.0000000,0.00000000,140.000000]
+MATERIAL tag=mat4 label=Air domains=[1]
+MATERIAL tag=mat3 label=N52 (Sintered NdFeB) domains=[3, 4]
+MATERIAL tag=mat5 label=UNS S30415 [solid] domains=[2]
+PHYSICS tag=mfc1 type=MagneticFluxConservationFluid domains=[1] boundaries=[]
+PHYSICS tag=mi1 type=MagneticInsulation domains=[] boundaries=[1, 2, 3, 4, 20, 21, 22, 23]
+PHYSICS tag=init1 type=init domains=[1, 2, 3, 4] boundaries=[]
+PHYSICS tag=mfc2 type=MagneticFluxConservationFluid domains=[4] boundaries=[]
+PHYSICS tag=zsp1 type=ZeroMagneticScalarPotential domains=[] boundaries=[]
+PHYSICS tag=mfcs1 type=MagneticFluxConservationSolid domains=[3] boundaries=[]
+PHYSICS tag=fcal1 type=ForceCalculation domains=[3] boundaries=[]
+PHYSICS tag=mfcs2 type=MagneticFluxConservationSolid domains=[2] boundaries=[]
+SOLVER_EFFECTIVE study=st_audit_l1_z140_p90 solver=pardiso fullycoupled_to=dDef usestol=on stol=1e-6
+SOLVE_START level=L1 z=140 phi=90 sol=sol1
+FORCE_READ expr=mfnc.Forcex_force_magnet unit=N value=-2.51237157738e-05
+FORCE_READ expr=mfnc.Forcex_force_magnet unit=mN value=-0.0251237157738
+AUDIT_RESULT level=L1 z=140 phi=90 hgap_mm=0.04700000 elements=559638 size=[747031, 1] Fx_N=-2.51237157738e-05 Fx_mN=-0.0251237157738 status=SUCCESS
+OUTER_RADIUS_FINISH radius_mm=400.000000000 elements=559638
