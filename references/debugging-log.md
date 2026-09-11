@@ -23,3 +23,11 @@
 - 验证：z=140 mm、phi=90 deg，局部边界 `hmax=0.070/0.047/0.035 mm` 的单元数为 `263920/557996/1036190`，但 Fx 为 `-0.486299/-0.072941/+0.210720 mN`，因此力积分尚未网格收敛。
 - 失败边界：用 `PartitionDomains` 切分包含钢片/圆柱的外空气域，在本模型上长时间停留于几何布尔阶段且无输出；未将其用于正式模型。清空固体物理选择的零净力副本也未取得有效解，不能将失败分支作为物理结果。
 - 版本：COMSOL 6.3，Windows 11。
+
+## 2026-09-11：Force Calculation 自动生成表达式审计
+
+- 症状：需要展开 `mfnc/fcal1` 的 Maxwell 应力积分，核对 `Forcex_force_magnet` 的边界贡献。
+- 原因/限制：COMSOL 6.3 Java API 可读取 `ForceCalculation` 的公开属性和域选择，但当前模型的 `model.variable()`、`component.variable()` 均为空，`result().numerical()` 也为空；自动生成的应力变量没有作为可枚举模型树变量暴露。
+- 可用方案：只记录已实际读取的 `ForceName=force_magnet`、`selection domain=[3]`、`useAverage=1` 和 StudyStep；用官方 Application Library 的 Force Calculation 示例确认变量可通过 GUI Expression autocomplete 查找，但不把示例中的 `nToutx_FEM_rod` 等名称套到本模型。未取得当前模型的确切应力变量前，不做边界分解或自写 Maxwell 张量。
+- 结果：`force_boundary_contributions.csv` 明确标记 `API_LIMITATION`；闭合空气包络面因本模型 0.28 mm 负 x 间隙及 PartitionDomains 布尔测试停滞，标记 `NOT_BUILT_GEOMETRY_LIMITATION`，没有填零或伪造独立力。
+- 版本：COMSOL 6.3，Windows 11。

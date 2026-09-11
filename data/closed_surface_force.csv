@@ -1,0 +1,3 @@
+case,z_mm,phi_deg,surface,valid_closed_air_surface,Fx_mN,status,notes
+L1_main,140,90,S1,false,,NOT_BUILT_GEOMETRY_LIMITATION,"No legal auxiliary surface was built; local PartitionDomains test stalled during geometry Boolean construction."
+L1_main,140,90,S2,false,,NOT_BUILT_GEOMETRY_LIMITATION,"No legal auxiliary surface was built; no independent closed-surface force value is claimed."

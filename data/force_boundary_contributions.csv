@@ -1,0 +1,4 @@
+mesh_level,z_mm,phi_deg,force_expr,minus_x_face_mN,plus_x_face_mN,side_mN,sum_mN,fcal1_mN,cancellation_ratio,status
+L0,140,90,mfnc.Forcex_force_magnet,,,,,-0.486298993,,API_LIMITATION
+L1,140,90,mfnc.Forcex_force_magnet,,,,,-0.072940878,,API_LIMITATION
+L2,140,90,mfnc.Forcex_force_magnet,,,,,0.210720222,,API_LIMITATION

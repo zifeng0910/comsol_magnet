@@ -1,0 +1,13 @@
+MODEL=H:\comsolcc\local_force_audit_140_phi90_20260911\L1\solved.mph
+MODEL_VARIABLE_COLLECTIONS=[]
+COMPONENT=comp1
+COMP_VARIABLE_COLLECTIONS=[]
+FCAL tag=fcal1 type=ForceCalculation dom=[3] bnd=[]
+FCAL_PROPERTY ForceName=[force_magnet]
+FCAL_PROPERTY TorqueAxis=[1, 0, 0]
+FCAL_PROPERTY TorqueRotationPoint=[0, 0, 0]
+FCAL_PROPERTY useAverage=[1]
+FCAL_PROPERTY StudyStep=[st_audit_l1_z140_p90/stat]
+FCAL_PROPERTY showPhysicsSymbols=[1]
+ALL_RESULT_NUMERICAL=[]
+ALL_RESULT_DATASET=[dset1]
