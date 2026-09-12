@@ -357,6 +357,16 @@ public class RunModelBLocalMeshConvergence {
     }
     log("MACRO_SPARSE_FINISH out="+out);
   }
+  /** 转变区补点：仅计算 105/110/115 mm，每个高度完整稀疏周期。 */
+  static void runTransitionSparse(String source,Path out)throws Exception{
+    double[] zs=new double[]{105,110,115};
+    for(double z:zs){
+      Path zd=out.resolve("transition_z"+f(z)); Files.createDirectories(zd);
+      log("TRANSITION_START z="+f(z)+" phi=0:45:360 alpha=0 GEOM_MESH_REBUILD=true");
+      runSparseZ(source,zd,z,"modelB_x26_transition_phi_sparse.csv");
+    }
+    log("TRANSITION_FINISH out="+out);
+  }
   /** M02 单相位复核，参数 z 与 phi 由命令行给出。 */
   static void runM02Pose(String source,Path out,double z,double phi)throws Exception{
     String name="alpha0_m02_z"+f(z)+"_p"+f(phi)+"_"+System.nanoTime(); Model m=null;
@@ -397,6 +407,7 @@ public class RunModelBLocalMeshConvergence {
       else if(a.length==5&&"m02pose".equalsIgnoreCase(a[2])) runM02Pose(a[0],out,Double.parseDouble(a[3]),Double.parseDouble(a[4]));
       else if(a.length==3&&"macrofirst".equalsIgnoreCase(a[2])) runMacroFirst(a[0],out);
       else if(a.length==3&&"macrosparse".equalsIgnoreCase(a[2])) runMacroSparseReps(a[0],out);
+      else if(a.length==3&&"transition".equalsIgnoreCase(a[2])) runTransitionSparse(a[0],out);
       else {Path csv=out.resolve("modelB_z120_local_mesh_convergence.csv");try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){header(w);runLevel(a[0],out,"CURRENT_SOURCE_MESH",Double.NaN,w);runLevel(a[0],out,"LOCAL_M03",0.03,w);runLevel(a[0],out,"LOCAL_M02",0.02,w);}log("FINISH csv="+csv);}
     }finally{try{ModelUtil.disconnect();}catch(Throwable ignored){}}
   }
