@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Model B: resource-feasible local mesh convergence at one fixed pose.
  *
- * Fixed case: z=120 mm, alpha=30 deg, phi=90 deg, gap=0.30 mm.
+ * Main comparison cases: alpha=0 deg and alpha=20 deg, gap=0.30 mm.
  * Each mesh level is loaded from a fresh source copy.  Within one level,
  * B0/B1/B2 reuse the exact same geometry and mesh.
  *
@@ -290,11 +290,15 @@ public class RunModelBLocalMeshConvergence {
   }
   /** Stage A：固定 z、alpha=0 的完整稀疏角度扫描；B0/B1 只求一次，B2 随 phi 变化。 */
   static void runSparseZ(String source,Path out,double z,String fileName)throws Exception{
+    runSparseZ(source,out,z,0.0,fileName);
+  }
+  /** 可复用的固定 alpha 稀疏周期扫描；alpha 只改变磁化姿态，不改变几何和网格策略。 */
+  static void runSparseZ(String source,Path out,double z,double alpha,String fileName)throws Exception{
     String name="alpha0_sparse_z"+f(z)+"_"+System.nanoTime(); Model m=null;
     try{
       m=ModelUtil.load(name,source); cleanup(m); removeRotating(m);
       m.param().set("x_sphere",f(X_SPHERE)+"[mm]"); m.param().set("x_gap",f(GAP)+"[mm]");
-      m.param().set("z_sphere",f(z)+"[mm]"); m.param().set("alpha","0[deg]"); m.param().set("phi","0[deg]");
+      m.param().set("z_sphere",f(z)+"[mm]"); m.param().set("alpha",f(alpha)+"[deg]"); m.param().set("phi","0[deg]");
       m.component("comp1").geom("geom1").run(); verifyDomains(m); capturePhysics(m); normalize(m); reference(m); poseAtX(m,X_SPHERE,z,0); mesh(m,"LOCAL_M03",0.03);
       int ne=m.component("comp1").mesh("mesh1").getNumElem(); double q=m.component("comp1").mesh("mesh1").getMinQuality();
       steelOff(m); ballOff(m); poseAtX(m,X_SPHERE,z,0); double[] b0=solve(m,"B0 sparse z="+f(z));
@@ -311,7 +315,7 @@ public class RunModelBLocalMeshConvergence {
         }
       }
       try(PrintWriter s=new PrintWriter(Files.newBufferedWriter(out.resolve("stageA_summary.txt")))){s.println("z_sphere_mm="+f(z));s.println("Fmin_mN="+f(fmin));s.println("Fmax_mN="+f(fmax));s.println("phi_at_Fmax_deg="+f(phiMax));s.println("elements="+ne);s.println("min_quality="+f(q));}
-      log("SPARSE_FINISH z="+f(z)+" Fmin="+f(fmin)+" Fmax="+f(fmax)+" phi_at_Fmax="+f(phiMax)+" csv="+csv);
+      log("SPARSE_FINISH z="+f(z)+" alpha="+f(alpha)+" Fmin="+f(fmin)+" Fmax="+f(fmax)+" phi_at_Fmax="+f(phiMax)+" csv="+csv);
     }finally{try{if(m!=null)m.save(out.resolve("z"+f(z)+"_M03_last_state.mph").toString());}catch(Throwable ignored){}try{ModelUtil.remove(name);}catch(Throwable ignored){}}
   }
   /**
@@ -367,6 +371,16 @@ public class RunModelBLocalMeshConvergence {
     }
     log("TRANSITION_FINISH out="+out);
   }
+  /** Group B：alpha=20 deg 的核心高度完整稀疏周期扫描。 */
+  static void runAlpha20Sparse(String source,Path out)throws Exception{
+    double[] zs=new double[]{60,80,100,120,140,160};
+    for(double z:zs){
+      Path zd=out.resolve("alpha20_z"+f(z)); Files.createDirectories(zd);
+      log("ALPHA20_START z="+f(z)+" phi=0:45:360 GEOM_MESH_REBUILD=true");
+      runSparseZ(source,zd,z,20.0,"modelB_alpha20_phi_sparse.csv");
+    }
+    log("ALPHA20_FINISH out="+out);
+  }
   /** M02 单相位复核，参数 z 与 phi 由命令行给出。 */
   static void runM02Pose(String source,Path out,double z,double phi)throws Exception{
     String name="alpha0_m02_z"+f(z)+"_p"+f(phi)+"_"+System.nanoTime(); Model m=null;
@@ -408,6 +422,7 @@ public class RunModelBLocalMeshConvergence {
       else if(a.length==3&&"macrofirst".equalsIgnoreCase(a[2])) runMacroFirst(a[0],out);
       else if(a.length==3&&"macrosparse".equalsIgnoreCase(a[2])) runMacroSparseReps(a[0],out);
       else if(a.length==3&&"transition".equalsIgnoreCase(a[2])) runTransitionSparse(a[0],out);
+      else if(a.length==3&&"alpha20sparse".equalsIgnoreCase(a[2])) runAlpha20Sparse(a[0],out);
       else {Path csv=out.resolve("modelB_z120_local_mesh_convergence.csv");try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){header(w);runLevel(a[0],out,"CURRENT_SOURCE_MESH",Double.NaN,w);runLevel(a[0],out,"LOCAL_M03",0.03,w);runLevel(a[0],out,"LOCAL_M02",0.02,w);}log("FINISH csv="+csv);}
     }finally{try{ModelUtil.disconnect();}catch(Throwable ignored){}}
   }
