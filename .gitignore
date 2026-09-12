@@ -7,6 +7,8 @@
 # Local runtime/cache files
 *.tmp
 *.bak
+__pycache__/
+*.py[cod]
 Thumbs.db
 
 # Large local COMSOL run directories; lightweight CSV/log/report artifacts are tracked separately
