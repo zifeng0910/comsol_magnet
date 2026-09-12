@@ -1,0 +1,6 @@
+z_sphere_mm=50.0000000000
+Fmin_mN=-0.249865256238
+Fmax_mN=0.00682450124723
+phi_at_Fmax_deg=270.000000000
+elements=872085
+min_quality=0.220600000000
