@@ -1,0 +1,2 @@
+"z_sphere_mm","alpha_deg","phi_deg","mesh_level","Fx_B0_raw_mN","Fx_B1_raw_mN","Fx_B2_raw_mN","Fx_hold_corr_mN","DeltaFx_ball_mN","Fx_total_corr_mN","Fy_total_corr_mN","Fz_total_corr_mN","elements","DOF","min_quality","same_mesh_verified","release_candidate","status"
+"90.0000000000","20.0000000000","90.0000000000","LOCAL_M02","0.00221758320438","-0.126432701798","-0.0335759263077","-0.128650285002","0.0928567754902","-0.0357935095121","-0.000226098555181","-0.377011275235","1933950","2580085","0.204800000000","true","MAGNETICALLY_HELD","SUCCESS"

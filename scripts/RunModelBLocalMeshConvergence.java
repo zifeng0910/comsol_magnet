@@ -381,14 +381,31 @@ public class RunModelBLocalMeshConvergence {
     }
     log("ALPHA20_FINISH out="+out);
   }
+  /** Group B local-height refinement around the z=80 sparse maximum. */
+  static void runAlpha20Refinement(String source,Path out)throws Exception{
+    double[] zs=new double[]{70,75,85,90};
+    for(double z:zs){
+      Path zd=out.resolve("alpha20_z"+f(z)); Files.createDirectories(zd);
+      log("ALPHA20_REFINEMENT_START z="+f(z)+" phi=0:45:360 GEOM_MESH_REBUILD=true");
+      runSparseZ(source,zd,z,20.0,"modelB_alpha20_refinement_phi_sparse.csv");
+    }
+    log("ALPHA20_REFINEMENT_FINISH out="+out);
+  }
   /** M02 单相位复核，参数 z 与 phi 由命令行给出。 */
   static void runM02Pose(String source,Path out,double z,double phi)throws Exception{
-    String name="alpha0_m02_z"+f(z)+"_p"+f(phi)+"_"+System.nanoTime(); Model m=null;
+    runM02Pose(source,out,z,phi,0.0,"modelB_z"+f(z)+"_phi"+f(phi)+"_M02_validation.csv",false);
+  }
+  /** 任意 alpha 的 M02 单姿态三状态复核。 */
+  static void runM02Pose(String source,Path out,double z,double phi,double alpha,String fileName,boolean includeAlpha)throws Exception{
+    String name="alpha"+f(alpha)+"_m02_z"+f(z)+"_p"+f(phi)+"_"+System.nanoTime(); Model m=null;
     try{
-      m=ModelUtil.load(name,source); cleanup(m); removeRotating(m); m.param().set("x_sphere",f(X_SPHERE)+"[mm]");m.param().set("x_gap",f(GAP)+"[mm]");m.param().set("z_sphere",f(z)+"[mm]");m.param().set("alpha","0[deg]");m.param().set("phi",f(phi)+"[deg]");m.component("comp1").geom("geom1").run();verifyDomains(m);capturePhysics(m);normalize(m);reference(m);poseAtX(m,X_SPHERE,z,phi);mesh(m,"LOCAL_M02",0.02);int ne=m.component("comp1").mesh("mesh1").getNumElem();double q=m.component("comp1").mesh("mesh1").getMinQuality();
-      steelOff(m);ballOff(m);poseAtX(m,X_SPHERE,z,phi);double[] b0=solve(m,"B0 M02 z="+f(z)+" phi="+f(phi));steelOn(m);ballOff(m);poseAtX(m,X_SPHERE,z,phi);double[] b1=solve(m,"B1 M02 z="+f(z)+" phi="+f(phi));steelOn(m);ballOn(m);poseAtX(m,X_SPHERE,z,phi);double[] b2=solve(m,"B2 M02 z="+f(z)+" phi="+f(phi));String[] st=m.sol().tags();int d=dof(m,st[st.length-1]);double hold=b1[0]-b0[0],ball=b2[0]-b1[0],total=b2[0]-b0[0];Path csv=out.resolve("modelB_z"+f(z)+"_phi"+f(phi)+"_M02_validation.csv");
-      try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){w.println("z_sphere_mm,phi_deg,mesh_level,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,release_candidate,status");w.println(String.join(",",val(z),val(phi),"LOCAL_M02",val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(b2[1]-b0[1]),val(b2[2]-b0[2]),Integer.toString(ne),Integer.toString(d),val(q),"true",total>0?"MAGNETIC_RELEASE_CANDIDATE":"MAGNETICALLY_HELD","SUCCESS"));}
-      log("M02_RESULT z="+f(z)+" phi="+f(phi)+" Fx_hold="+f(hold)+" DeltaFx_ball="+f(ball)+" Fx_total="+f(total)+" elements="+ne+" dof="+d+" minq="+f(q));m.save(out.resolve("z"+f(z)+"_phi"+f(phi)+"_M02_validation.mph").toString());
+      m=ModelUtil.load(name,source); cleanup(m); removeRotating(m); m.param().set("x_sphere",f(X_SPHERE)+"[mm]");m.param().set("x_gap",f(GAP)+"[mm]");m.param().set("z_sphere",f(z)+"[mm]");m.param().set("alpha",f(alpha)+"[deg]");m.param().set("phi",f(phi)+"[deg]");m.component("comp1").geom("geom1").run();verifyDomains(m);capturePhysics(m);normalize(m);reference(m);poseAtX(m,X_SPHERE,z,phi);mesh(m,"LOCAL_M02",0.02);int ne=m.component("comp1").mesh("mesh1").getNumElem();double q=m.component("comp1").mesh("mesh1").getMinQuality();
+      steelOff(m);ballOff(m);poseAtX(m,X_SPHERE,z,phi);double[] b0=solve(m,"B0 M02 alpha="+f(alpha)+" z="+f(z)+" phi="+f(phi));steelOn(m);ballOff(m);poseAtX(m,X_SPHERE,z,phi);double[] b1=solve(m,"B1 M02 alpha="+f(alpha)+" z="+f(z)+" phi="+f(phi));steelOn(m);ballOn(m);poseAtX(m,X_SPHERE,z,phi);double[] b2=solve(m,"B2 M02 alpha="+f(alpha)+" z="+f(z)+" phi="+f(phi));String[] st=m.sol().tags();int d=dof(m,st[st.length-1]);double hold=b1[0]-b0[0],ball=b2[0]-b1[0],total=b2[0]-b0[0];Path csv=out.resolve(fileName);
+      try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){
+        if(includeAlpha){w.println("z_sphere_mm,alpha_deg,phi_deg,mesh_level,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,release_candidate,status");w.println(String.join(",",val(z),val(alpha),val(phi),"LOCAL_M02",val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(b2[1]-b0[1]),val(b2[2]-b0[2]),Integer.toString(ne),Integer.toString(d),val(q),"true",total>0?"MAGNETIC_RELEASE_CANDIDATE":"MAGNETICALLY_HELD","SUCCESS"));}
+        else{w.println("z_sphere_mm,phi_deg,mesh_level,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,release_candidate,status");w.println(String.join(",",val(z),val(phi),"LOCAL_M02",val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(b2[1]-b0[1]),val(b2[2]-b0[2]),Integer.toString(ne),Integer.toString(d),val(q),"true",total>0?"MAGNETIC_RELEASE_CANDIDATE":"MAGNETICALLY_HELD","SUCCESS"));}
+      }
+      log("M02_RESULT alpha="+f(alpha)+" z="+f(z)+" phi="+f(phi)+" Fx_hold="+f(hold)+" DeltaFx_ball="+f(ball)+" Fx_total="+f(total)+" elements="+ne+" dof="+d+" minq="+f(q));m.save(out.resolve(includeAlpha?"alpha"+f(alpha)+"_z"+f(z)+"_phi"+f(phi)+"_M02_validation.mph":"z"+f(z)+"_phi"+f(phi)+"_M02_validation.mph").toString());
     }finally{try{if(m!=null)m.save(out.resolve("m02_last_state.mph").toString());}catch(Throwable ignored){}try{ModelUtil.remove(name);}catch(Throwable ignored){}}
   }
   static void runZAlpha0(String source,Path out)throws Exception{
@@ -409,7 +426,7 @@ public class RunModelBLocalMeshConvergence {
     }finally{try{ModelUtil.remove(name);}catch(Throwable ignored){}}
   }
   public static void main(String[] a)throws Exception{
-    if(a.length<2||a.length>5)throw new IllegalArgumentException("Usage: source.mph output_dir [alpha|alpha0m02|zalpha0|xscan|sparse50|m02pose|macrofirst] [checkpoint-or-z] [phi]");Path out=Paths.get(a[1]);Files.createDirectories(out);ModelUtil.initStandalone(false);
+    if(a.length<2||a.length>5)throw new IllegalArgumentException("Usage: source.mph output_dir [alpha|alpha0m02|zalpha0|xscan|sparse50|m02pose|alpha20m02|macrofirst|alpha20refine] [checkpoint-or-z] [phi]");Path out=Paths.get(a[1]);Files.createDirectories(out);ModelUtil.initStandalone(false);
     try{ModelUtil.showProgress(out.resolve("progress.log").toString());
       if(a.length==3&&"alpha".equalsIgnoreCase(a[2])) runAlpha(a[0],out);
       else if(a.length==4&&"alpha0m02".equalsIgnoreCase(a[2])) runAlpha0M02(a[3],out);
@@ -419,10 +436,12 @@ public class RunModelBLocalMeshConvergence {
       else if(a.length==3&&"xscan".equalsIgnoreCase(a[2])) runXScan(a[0],out);
       else if(a.length==3&&"sparse50".equalsIgnoreCase(a[2])) runSparseZ(a[0],out,50.0,"modelB_z50_phi_sparse.csv");
       else if(a.length==5&&"m02pose".equalsIgnoreCase(a[2])) runM02Pose(a[0],out,Double.parseDouble(a[3]),Double.parseDouble(a[4]));
+      else if(a.length==5&&"alpha20m02".equalsIgnoreCase(a[2])) runM02Pose(a[0],out,Double.parseDouble(a[3]),Double.parseDouble(a[4]),20.0,"modelB_alpha20_M02_validation.csv",true);
       else if(a.length==3&&"macrofirst".equalsIgnoreCase(a[2])) runMacroFirst(a[0],out);
       else if(a.length==3&&"macrosparse".equalsIgnoreCase(a[2])) runMacroSparseReps(a[0],out);
       else if(a.length==3&&"transition".equalsIgnoreCase(a[2])) runTransitionSparse(a[0],out);
       else if(a.length==3&&"alpha20sparse".equalsIgnoreCase(a[2])) runAlpha20Sparse(a[0],out);
+      else if(a.length==3&&"alpha20refine".equalsIgnoreCase(a[2])) runAlpha20Refinement(a[0],out);
       else {Path csv=out.resolve("modelB_z120_local_mesh_convergence.csv");try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){header(w);runLevel(a[0],out,"CURRENT_SOURCE_MESH",Double.NaN,w);runLevel(a[0],out,"LOCAL_M03",0.03,w);runLevel(a[0],out,"LOCAL_M02",0.02,w);}log("FINISH csv="+csv);}
     }finally{try{ModelUtil.disconnect();}catch(Throwable ignored){}}
   }

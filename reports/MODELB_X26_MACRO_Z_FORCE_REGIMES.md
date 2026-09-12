@@ -132,17 +132,76 @@ alpha=20 的核心高度扫描已准备好，固定 z=60/80/100/120/140/160 mm�
 | 140 | -0.088806836 | -0.103101387 | -0.014294551 |
 | 160 | -0.109267222 | -0.117382066 | -0.008114844 |
 
-alpha=20 在六个已测高度上没有释放窗口，也没有出现正负转变：最接近零的是
-z=80、phi=90°，但仍为 `-0.037727585 mN`。因此不能把 alpha=0 的
-100--105 mm 转变区解释为仅沿 z 平移；倾斜 20°改变了低 z 分支的符号和幅值，
-尤其在 z=60 将 Fmax 压低约 0.429 mN。当前证据只能说明释放窗口在已测
-60--160 mm 范围内消失；它可能移到 z<60，也可能完全消失，尚不能外推。
+六个初始高度没有释放窗口。为排除 z=80 附近隐藏的窄峰，进一步只新增
+z=70/75/85/90 mm 的完整 0:45:360 稀疏周期；没有重算 60/80/100 mm。
 
-如需继续寻找 alpha=20 的释放候选，下一批应先做 z=40/50/70/90 mm 的
-0:45:360 稀疏筛选，而不是直接复用 alpha=0 的 105/110/115 mm 补点。
+## alpha=20 局部 z 补密
+
+新增 36 个相位点全部 `SUCCESS`。每个高度只构建一次几何和一次 LOCAL_M03
+网格，B0/B1 各求解一次，全部 B2 相位复用同一网格和基准解。
+
+| z (mm) | Fmin (mN) | Fmax (mN) | phi@Fmax | phi@Fmin | DeltaFx_ball@Fmax (mN) | Fx_hold_corr (mN) |
+|---:|---:|---:|---:|---:|---:|---:|
+| 70 | -0.630093149 | -0.091574839 | 90 | 270 | +0.036514078 | -0.128088916 |
+| 75 | -0.552682015 | -0.062300449 | 90 | 270 | +0.065738558 | -0.128039007 |
+| 85 | -0.431149520 | -0.037129857 | 90 | 270 | +0.090924229 | -0.128054086 |
+| 90 | -0.384949915 | -0.035768071 | 90 | 270 | +0.092434956 | -0.128203027 |
+
+所有新增点均满足 `Fmax < -0.02 mN`，因此按预设停止准则不再计算
+65/72.5/77.5/82.5/87.5/95 mm。合并 60/70/75/80/85/90/100 mm 后，
+实际计算点中的局部最大值为 z=90 mm、phi=90°的 `-0.035768071 mN`；
+该点是数据中的真实最大值，没有通过拟合或插值制造更高峰值。
+
+## alpha=20 峰值点 M02 验证
+
+只对整个 60--160 mm 已测范围内最接近释放的实际点 z=90 mm、phi=90°
+进行了 LOCAL_M02 same-mesh 三状态验证：
+
+| mesh | Fx_hold_corr (mN) | DeltaFx_ball (mN) | Fx_total_corr (mN) | elements | DOF | status |
+|---|---:|---:|---:|---:|---:|---|
+| LOCAL_M03 | -0.128203027 | +0.092434956 | -0.035768071 | 872,619 | 1,164,672 | SUCCESS |
+| LOCAL_M02 | -0.128650285 | +0.092856775 | -0.035793510 | 1,933,950 | 2,580,085 | SUCCESS |
+
+M02 与 M03 同号，`Fx_total_corr` 差异仅 `-0.000025439 mN`。因此满足最终判据：
+
+`NO_RELEASE_CANDIDATE_FOR_ALPHA20`
+
+`IN_TESTED_Z_RANGE_60_TO_160_MM`
+
+该结论仅适用于固定 `x_sphere=26 mm`、`gap=0.30 mm` 和本报告已测试的高度，
+不外推为所有可能 z 都无法释放。
+
+## 两组最终结论
+
+在固定 x_sphere=26 mm、gap=0.30 mm 条件下，alpha=0°在中等 z 范围形成
+明显正向释放窗口，并在约 100--105 mm 进入负向保持区。相比之下，alpha=20°
+在已测试的 60--160 mm 范围内始终保持负值；其在中间高度虽存在局部 Fmax
+峰值，但经过局部补密及 M02 网格复核后仍不足以实现释放。
+
+At fixed x_sphere=26 mm and gap=0.30 mm, alpha=0° exhibits a clear
+positive-force release window at intermediate sphere heights, followed by a
+positive-to-negative transition near z=100--105 mm. In contrast, alpha=20°
+remains negative over the tested z=60--160 mm range. Its least-negative force
+occurs at the intermediate-height local maximum, but remains below zero after
+local-height refinement and mesh validation.
+
+共同高度的 `alpha20-alpha0` Fmax 差值从 z=60 的 `-0.428578730 mN`，依次缩小为
+z=80 的 `-0.150591178`、z=100 的 `-0.060684202`、z=120 的 `-0.028246942`、
+z=140 的 `-0.014294551` 和 z=160 的 `-0.008114844 mN`。绝对差值随 z 增大
+持续缩小；远场中两组球贡献都衰减，Fmax 均趋近约 `-0.12815 mN` 的 holding force。
+alpha=0 在低中高度的 +x 球贡献足以越过零线，而 alpha=20 的球贡献在 z=60
+甚至为负，在局部峰值处也不足以抵消 holding force。
+
+最终趋势图：
+
+- [Fmax vs z：alpha=0 与 alpha=20](../figures/modelB_alpha0_alpha20_Fmax_vs_z.pdf)
+- [峰值相位球贡献 vs z](../figures/modelB_alpha0_alpha20_ball_contribution_vs_z.pdf)
 
 归档数据：
 
 - `data/modelB_alpha20_sparse.csv`
+- `data/modelB_alpha20_z70_90_refinement.csv`
+- `data/modelB_alpha20_z70_90_Fmax_summary.csv`
 - `data/modelB_alpha20_Fmax_summary.csv`
+- `data/modelB_alpha20_peak_M02_validation.csv`
 - `data/modelB_alpha0_alpha20_Fmax_comparison.csv`
