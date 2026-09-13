@@ -11,24 +11,24 @@ while ($true) {
     $lines = Get-Content $GridLog
     foreach ($line in $lines) {
       if ($line -match 'START PID=(\d+) alpha=.*? dir=(.+)$') {
-        $pid = [int]$Matches[1]
+        $childPid = [int]$Matches[1]
         $dir = $Matches[2].Trim()
-        if ($seen.ContainsKey($pid)) { continue }
-        $seen[$pid] = $dir
+        if ($seen.ContainsKey($childPid)) { continue }
+        $seen[$childPid] = $dir
       }
     }
   }
   foreach ($entry in @($seen.GetEnumerator())) {
-    $pid = [int]$entry.Key
+    $childPid = [int]$entry.Key
     $dir = [string]$entry.Value
-    $proc = Get-Process -Id $pid -ErrorAction SilentlyContinue
+    $proc = Get-Process -Id $childPid -ErrorAction SilentlyContinue
     if (-not $proc) { continue }
     $logs = Get-ChildItem -LiteralPath $dir -Filter 'runner.stdout.log' -File -ErrorAction SilentlyContinue
     if ($logs) {
       $tail = Get-Content -LiteralPath $logs.FullName -Tail 4 -ErrorAction SilentlyContinue
       if ($tail -match 'FULL360_FINISH') {
-        Stop-Process -Id $pid -Force
-        Add-Content -LiteralPath ($GridLog -replace '\.stdout\.log$','.watch.log') -Value ("STOP PID={0} FINISH dir={1}" -f $pid,$dir)
+        Stop-Process -Id $childPid -Force
+        Add-Content -LiteralPath ($GridLog -replace '\.stdout\.log$','.watch.log') -Value ("STOP PID={0} FINISH dir={1}" -f $childPid,$dir)
       }
     }
   }
