@@ -50,12 +50,24 @@ function Get-HeightState($group, $z) {
     Event = 'not started'
     Phi = ''
     Fx = ''
+    Fmax = ''
+    PhiFmax = ''
+    Hold = ''
     Warning = ''
   }
   if (Test-Path $csv) {
     $rows = @(Import-Csv $csv)
     $state.Rows = $rows.Count
     $state.Finished = ($rows.Count -eq 37 -and @($rows | Where-Object { $_.status -ne 'SUCCESS' }).Count -eq 0)
+    if ($rows.Count -gt 0) {
+      $last = $rows[-1]
+      $state.Fx = $last.Fx_total_corr_mN
+      $state.Phi = $last.phi_deg
+      $state.Hold = $last.Fx_hold_corr_mN
+      $peak = $rows | Sort-Object { [double]$_.Fx_total_corr_mN } -Descending | Select-Object -First 1
+      $state.Fmax = $peak.Fx_total_corr_mN
+      $state.PhiFmax = $peak.phi_deg
+    }
   }
   if (Test-Path $log) {
     $item = Get-Item $log
@@ -96,7 +108,7 @@ function Show-Monitor {
   if ($queue.Count -gt 0) { Write-Host '  Remaining-queue PowerShell is running.' -ForegroundColor Green }
   else { Write-Host '  Remaining-queue PowerShell is not running.' -ForegroundColor Yellow }
   Write-Host ''
-  $states | Where-Object { $_.Log -and (Test-Path $_.Log) } | Format-Table Group,Z,Rows,Finished,Event,Phi,Fx,AgeMin -AutoSize
+  $states | Where-Object { $_.Log -and (Test-Path $_.Log) } | Format-Table Group,Z,Rows,Finished,Event,Fmax,PhiFmax,Fx,Hold,AgeMin -AutoSize
   $activeStates = @($states | Where-Object { $_.AgeMin -ne $null -and -not $_.Finished })
   $stalled = @($activeStates | Where-Object { $_.AgeMin -ge $StallMinutes })
   if ($stalled.Count -gt 0 -and $runner.Count -gt 0) {
