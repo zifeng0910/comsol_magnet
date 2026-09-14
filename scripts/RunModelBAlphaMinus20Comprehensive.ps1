@@ -22,8 +22,9 @@ Write-Output 'z_list=40,50,60,70,80,90,100,110,120,130,140,150,160'
 Write-Output 'phi_list=0,30,60,90,120,150,180,210,240,270,300,330,360'
 Write-Output ("workdir={0}" -f $WorkDir)
 
+$selfPid = $PID
 $related = @(Get-CimInstance Win32_Process | Where-Object {
-  $_.CommandLine -match 'RunModelBAlphaMinus20Comprehensive\.ps1|modelB_alpha_minus20_comprehensive_20260914'
+  $_.ProcessId -ne $selfPid -and $_.CommandLine -match 'RunModelBAlphaMinus20Comprehensive\.ps1|modelB_alpha_minus20_comprehensive_20260914'
 })
 if ($related.Count -gt 0) { throw 'RELATED_ALPHA_MINUS20_TASK_ALREADY_RUNNING' }
 
