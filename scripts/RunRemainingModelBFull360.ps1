@@ -1,4 +1,4 @@
-param([string]$Stamp = '20260913')
+param([string]$Stamp = '20260914')
 $ErrorActionPreference = 'Stop'
 $Compile = 'I:\Program Files\COMSOL\COMSOL63\Multiphysics\bin\win64\comsolcompile.exe'
 $Java = 'I:\Program Files\COMSOL\COMSOL63\Multiphysics\java\win64\jre\bin\java.exe'
@@ -13,7 +13,7 @@ foreach ($z in $zs) { $jobs += [pscustomobject]@{Alpha='minus20'; Mode='alphamin
 
 & $Compile -classpath $Plugins (Join-Path $ScriptRoot 'RunModelBLocalMeshConvergence.java') 2>&1 | Tee-Object (Join-Path $WorkRoot "full360_remaining_compile_$Stamp.log")
 if ($LASTEXITCODE -ne 0) { throw 'COMSOL Java compilation failed' }
-$queueLog = Join-Path $WorkRoot 'full360_remaining.stdout.log'
+$queueLog = Join-Path $WorkRoot ("full360_remaining_{0}.stdout.log" -f $Stamp)
 foreach ($job in $jobs) {
   $dir = Join-Path $job.Root ("z{0}" -f $job.Z)
   $csv = Join-Path $dir $job.Csv
