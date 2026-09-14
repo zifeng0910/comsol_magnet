@@ -429,13 +429,14 @@ public class RunModelBLocalMeshConvergence {
         if(b2sol==null)b2=solve(m,solveLabel); else {log("SOLVE_START "+solveLabel+" reuse_sol="+b2sol);m.sol(b2sol).runAll();log("SOLVE_DONE "+solveLabel+" reuse_sol="+b2sol);b2=new double[]{read(m,b2sol,FX)[0],read(m,b2sol,FY)[0],read(m,b2sol,FZ)[0]};}
         if(b2sol==null){String[] st0=m.sol().tags();b2sol=st0[st0.length-1];} String[] st=m.sol().tags(); int d=dof(m,b2sol);
         double ball=b2[0]-b1[0],total=b2[0]-b0[0],fy=b2[1]-b0[1],fz=b2[2]-b0[2];
-        rows.add(String.join(",",val(alpha),val(z),val(phi),"LOCAL_M03",val(hold),val(ball),val(total),val(fy),val(fz),Integer.toString(ne),Integer.toString(d),val(q),"true","SUCCESS"));
+        rows.add(String.join(",",val(alpha),val(z),val(phi),"LOCAL_M03",val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(fy),val(fz),Integer.toString(ne),Integer.toString(d),val(q),"true","SUCCESS"));
+        if(phi==0.0||phi==90.0||phi==180.0||phi==270.0||phi==360.0) log("FORCE_AUDIT alpha="+f(alpha)+" z="+f(z)+" phi="+f(phi)+" Fx_B0="+f(b0[0])+" Fx_B1="+f(b1[0])+" Fx_B2="+f(b2[0])+" Fx_hold="+f(hold)+" DeltaFx_ball="+f(ball)+" Fx_total="+f(total));
         if(total>fmax){fmax=total;phiMax=phi;} if(total<fmin){fmin=total;phiMin=phi;}
         log("FULL360_RESULT alpha="+f(alpha)+" z="+f(z)+" phi="+f(phi)+" Fx_total="+f(total)+" DeltaFx_ball="+f(ball)+" status=SUCCESS");
       }
       Path csv=out.resolve(fileName); try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){
-        w.println("alpha_deg,z_sphere_mm,phi_deg,mesh_level,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,Fmax_mN,Fmin_mN,phi_at_Fmax_deg,phi_at_Fmin_deg,all_sampled_phi_negative,release_candidate,elements,DOF,min_quality,same_mesh_verified,status");
-        for(String row:rows){String[] p=row.split(",",-1);String base=String.join(",",Arrays.copyOfRange(p,0,9));String meshInfo=String.join(",",Arrays.copyOfRange(p,9,p.length));w.println(base+","+val(fmax)+","+val(fmin)+","+val(phiMax)+","+val(phiMin)+","+(fmax<0)+","+(fmax>0)+","+meshInfo);}
+        w.println("alpha_deg,z_sphere_mm,phi_deg,mesh_level,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,Fmax_mN,Fmin_mN,phi_at_Fmax_deg,phi_at_Fmin_deg,all_sampled_phi_negative,release_candidate,elements,DOF,min_quality,same_mesh_verified,status");
+        for(String row:rows){String[] p=row.split(",",-1);String base=String.join(",",Arrays.copyOfRange(p,0,12));String meshInfo=String.join(",",Arrays.copyOfRange(p,12,p.length));w.println(base+","+val(fmax)+","+val(fmin)+","+val(phiMax)+","+val(phiMin)+","+(fmax<0)+","+(fmax>0)+","+meshInfo);}
       }
       log("FULL360_FINISH alpha="+f(alpha)+" z="+f(z)+" Fmin="+f(fmin)+" Fmax="+f(fmax)+" phi_at_Fmax="+f(phiMax)+" csv="+csv);
     }finally{try{ModelUtil.remove(name);}catch(Throwable ignored){}}

@@ -16,7 +16,7 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-STAMP = "20260913"
+STAMP = "20260914"
 WORK = ROOT / "work"
 DATA = ROOT / "data"
 FIGURES = ROOT / "figures"
@@ -29,6 +29,9 @@ EXPECTED = [
     "z_sphere_mm",
     "phi_deg",
     "mesh_level",
+    "Fx_B0_raw_mN",
+    "Fx_B1_raw_mN",
+    "Fx_B2_raw_mN",
     "Fx_hold_corr_mN",
     "DeltaFx_ball_mN",
     "Fx_total_corr_mN",

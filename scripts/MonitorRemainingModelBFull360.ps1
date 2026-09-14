@@ -1,13 +1,13 @@
 param(
   [int]$IntervalSec = 20,
   [int]$StallMinutes = 20,
+  [string]$Stamp = '20260914',
   [switch]$Once,
   [switch]$NoClear
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
 $WorkRoot = 'H:\comsolcc\comsol_magnet\work'
-$Stamp = '20260913'
 $Groups = @(
   @{ Name = 'alpha=0'; Dir = Join-Path $WorkRoot "modelB_alpha0_z100_120_full360_$Stamp"; Csv = 'modelB_alpha0_full360_phi.csv' },
   @{ Name = 'alpha=-20'; Dir = Join-Path $WorkRoot "modelB_alpha_minus20_z100_120_full360_$Stamp"; Csv = 'modelB_alpha_minus20_full360_phi.csv' }
