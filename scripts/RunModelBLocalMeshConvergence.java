@@ -28,6 +28,8 @@ public class RunModelBLocalMeshConvergence {
   static final double[] SPARSE_PHI={0,45,90,135,180,225,270,315,360};
   static final double[] FULL360_PHI=new double[37];
   static {for(int i=0;i<FULL360_PHI.length;i++)FULL360_PHI[i]=10.0*i;}
+  static final double[] MACRO30_PHI=new double[13];
+  static {for(int i=0;i<MACRO30_PHI.length;i++)MACRO30_PHI[i]=30.0*i;}
 
   static void log(String s){System.out.println(s);System.out.flush();}
   static String f(double x){return String.format(L,"%.12g",x);}
@@ -447,6 +449,34 @@ public class RunModelBLocalMeshConvergence {
     for(double z:zs){Path zd=out.resolve("z"+f(z));Files.createDirectories(zd);log("FULL360_START alpha="+f(alpha)+" z="+f(z)+" phi=0:10:360 GEOM_MESH_REBUILD=true");runFull360Z(source,zd,z,alpha,fileName);}
     log("FULL360_BATCH_FINISH alpha="+f(alpha)+" out="+out);
   }
+  /** Alpha=-20-only macro scan: one geometry/mesh and B0/B1 per height, then phi=0:30:360 with immediate CSV flush. */
+  static void runAlphaMinus20Macro30Z(String source,Path out,double z,Path phiCsv,Path summaryCsv)throws Exception{
+    final double alpha=-20.0; if(alpha!=-20.0)throw new IllegalStateException("WRONG_ALPHA_CONFIGURATION");
+    String name="alpha_minus20_macro30_z"+f(z)+"_"+System.nanoTime(); Model m=null;
+    try{
+      m=ModelUtil.load(name,source); cleanup(m); removeRotating(m);
+      m.param().set("x_sphere",f(X_SPHERE)+"[mm]"); m.param().set("x_gap",f(GAP)+"[mm]"); m.param().set("z_sphere",f(z)+"[mm]"); m.param().set("alpha","-20[deg]"); m.param().set("phi","0[deg]");
+      m.component("comp1").geom("geom1").run(); verifyDomains(m); capturePhysics(m); normalize(m); reference(m); poseAtX(m,X_SPHERE,z,0); mesh(m,"LOCAL_M03",0.03);
+      int ne=m.component("comp1").mesh("mesh1").getNumElem(); double q=m.component("comp1").mesh("mesh1").getMinQuality();
+      steelOff(m); ballOff(m); poseAtX(m,X_SPHERE,z,0); double[] b0=solve(m,"B0 alpha=-20 macro30 z="+f(z));
+      steelOn(m); ballOff(m); poseAtX(m,X_SPHERE,z,0); double[] b1=solve(m,"B1 alpha=-20 macro30 z="+f(z));
+      double hold=b1[0]-b0[0],fmax=-Double.MAX_VALUE,fmin=Double.MAX_VALUE,phiMax=Double.NaN,phiMin=Double.NaN,deltaAtMax=Double.NaN; int positive=0,negative=0; String b2sol=null;
+      try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(phiCsv,StandardOpenOption.CREATE,StandardOpenOption.APPEND)); PrintWriter s=new PrintWriter(Files.newBufferedWriter(summaryCsv,StandardOpenOption.CREATE,StandardOpenOption.APPEND))){
+        for(double phi:MACRO30_PHI){
+          m.param().set("phi",f(phi)+"[deg]"); ballOn(m); poseAtX(m,X_SPHERE,z,phi); String label="B2 alpha=-20 macro30 z="+f(z)+" phi="+f(phi); double[] b2;
+          if(b2sol==null)b2=solve(m,label); else {log("SOLVE_START "+label+" reuse_sol="+b2sol);m.sol(b2sol).runAll();log("SOLVE_DONE "+label+" reuse_sol="+b2sol);b2=new double[]{read(m,b2sol,FX)[0],read(m,b2sol,FY)[0],read(m,b2sol,FZ)[0]};}
+          if(b2sol==null){String[] st0=m.sol().tags();b2sol=st0[st0.length-1];}
+          String[] st=m.sol().tags(); int d=dof(m,b2sol); double ball=b2[0]-b1[0],total=b2[0]-b0[0],fy=b2[1]-b0[1],fz=b2[2]-b0[2];
+          if(total>fmax){fmax=total;phiMax=phi;deltaAtMax=ball;} if(total<fmin){fmin=total;phiMin=phi;} if(total>0)positive++; if(total<0)negative++;
+          s.flush(); w.println(String.join(",",val(z),"-20",val(phi),val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(fy),val(fz),Integer.toString(ne),Integer.toString(d),val(q),"true","SUCCESS")); w.flush();
+          log("MACRO_RESULT alpha=-20 z="+f(z)+" phi="+f(phi)+" Fx_total="+f(total)+" DeltaFx_ball="+f(ball)+" Fmax_running="+f(fmax)+" phi_at_Fmax="+f(phiMax)+" status=SUCCESS");
+          if(phi==0.0||phi==90.0||phi==180.0||phi==270.0||phi==360.0)log("FORCE_AUDIT alpha=-20 z="+f(z)+" phi="+f(phi)+" Fx_B0="+f(b0[0])+" Fx_B1="+f(b1[0])+" Fx_B2="+f(b2[0])+" Fx_hold="+f(hold)+" DeltaFx_ball="+f(ball)+" Fx_total="+f(total));
+        }
+        s.println(String.join(",",val(z),"-20",val(fmax),val(phiMax),val(fmin),val(phiMin),val(deltaAtMax),val(hold),Integer.toString(positive),Integer.toString(negative),Boolean.toString(fmax<0),Boolean.toString(fmax>0),"13","SUCCESS")); s.flush();
+      }
+      log("MACRO_FINISH alpha=-20 z="+f(z)+" Fmin="+f(fmin)+" Fmax="+f(fmax)+" phi_at_Fmax="+f(phiMax)+" phi_csv="+phiCsv+" summary_csv="+summaryCsv);
+    }finally{try{ModelUtil.remove(name);}catch(Throwable ignored){}}
+  }
   /** M02 单相位复核，参数 z 与 phi 由命令行给出。 */
   static void runM02Pose(String source,Path out,double z,double phi)throws Exception{
     runM02Pose(source,out,z,phi,0.0,"modelB_z"+f(z)+"_phi"+f(phi)+"_M02_validation.csv",false);
@@ -482,7 +512,7 @@ public class RunModelBLocalMeshConvergence {
     }finally{try{ModelUtil.remove(name);}catch(Throwable ignored){}}
   }
   public static void main(String[] a)throws Exception{
-    if(a.length<2||a.length>5)throw new IllegalArgumentException("Usage: source.mph output_dir [alpha|alpha0m02|zalpha0|xscan|sparse50|m02pose|alpha20m02|alphaminus20m02|macrofirst|alpha20refine|alphaminus20sparse|alphaminus20z|alpha0full360|alphaminus20full360] [checkpoint-or-z] [phi]");Path out=Paths.get(a[1]);Files.createDirectories(out);ModelUtil.initStandalone(false);
+    if(a.length<2||a.length>7)throw new IllegalArgumentException("Usage: source.mph output_dir [mode] ...");Path out=Paths.get(a[1]);Files.createDirectories(out);ModelUtil.initStandalone(false);
     try{ModelUtil.showProgress(out.resolve("progress.log").toString());
       if(a.length==3&&"alpha".equalsIgnoreCase(a[2])) runAlpha(a[0],out);
       else if(a.length==4&&"alpha0m02".equalsIgnoreCase(a[2])) runAlpha0M02(a[3],out);
@@ -505,6 +535,7 @@ public class RunModelBLocalMeshConvergence {
       else if(a.length==3&&"alphaminus20full360".equalsIgnoreCase(a[2])) runFull360Batch(a[0],out,-20.0,"modelB_alpha_minus20_full360_phi.csv");
       else if(a.length==4&&"alpha0full360z".equalsIgnoreCase(a[2])) runFull360Z(a[0],out,Double.parseDouble(a[3]),0.0,"modelB_alpha0_full360_phi.csv");
       else if(a.length==4&&"alphaminus20full360z".equalsIgnoreCase(a[2])) runFull360Z(a[0],out,Double.parseDouble(a[3]),-20.0,"modelB_alpha_minus20_full360_phi.csv");
+      else if(a.length==6&&"alphaminus20macro30z".equalsIgnoreCase(a[2])) runAlphaMinus20Macro30Z(a[0],out,Double.parseDouble(a[3]),Paths.get(a[4]),Paths.get(a[5]));
       else {Path csv=out.resolve("modelB_z120_local_mesh_convergence.csv");try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){header(w);runLevel(a[0],out,"CURRENT_SOURCE_MESH",Double.NaN,w);runLevel(a[0],out,"LOCAL_M03",0.03,w);runLevel(a[0],out,"LOCAL_M02",0.02,w);}log("FINISH csv="+csv);}
     }finally{try{ModelUtil.disconnect();}catch(Throwable ignored){}}
   }
