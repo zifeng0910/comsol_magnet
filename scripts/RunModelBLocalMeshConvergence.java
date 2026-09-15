@@ -511,6 +511,23 @@ public class RunModelBLocalMeshConvergence {
     }
     log("CRITICAL_FULL360_BATCH_FINISH alpha=-20 z_count="+zs.length+" phase_points=101 csv="+csv+" summary="+summary);
   }
+  /** Single-height extension: the only permitted workload is alpha=-20, z=88, phi=0:3.6:360. */
+  static void runAlphaMinus20Z88Full360Batch(String source,Path out)throws Exception{
+    final double alpha=-20.0,z=88.0;
+    if(alpha!=-20.0||z!=88.0||X_SPHERE!=26.0||GAP!=0.30)
+      throw new IllegalStateException("Z88_CONFIGURATION_ASSERT_FAILED alpha="+f(alpha)+" z="+f(z)+" x="+f(X_SPHERE)+" gap="+f(GAP));
+    Files.createDirectories(out);
+    Path csv=out.resolve("modelB_alpha_minus20_z88_full360.csv");
+    Path summary=out.resolve("modelB_alpha_minus20_z88_full360_summary.csv");
+    if(Files.exists(csv)||Files.exists(summary))throw new IllegalStateException("Z88_OUTPUT_ALREADY_EXISTS_NO_OVERWRITE");
+    try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv));PrintWriter s=new PrintWriter(Files.newBufferedWriter(summary))){
+      w.println("z_sphere_mm,alpha_deg,phi_deg,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,status");
+      s.println("z_sphere_mm,alpha_deg,Fmax_mN,phi_at_Fmax_deg,Fmin_mN,phi_at_Fmin_deg,positive_phase_count,negative_phase_count,all_sampled_phi_negative,phase_points,Fx_hold_corr_mN,elements,DOF,min_quality,same_mesh_verified,status");
+      log("Z88_FULL360_START alpha=-20 z=88 x_sphere=26 gap=0.30 phi=0:3.6:360 mesh=LOCAL_M03");
+      runCriticalFull360Z(source,out.resolve("z88"),z,w,s);
+    }
+    log("Z88_FULL360_BATCH_FINISH alpha=-20 z=88 phase_points=101 csv="+csv+" summary="+summary);
+  }
   /** Force-level screening: one real phi=90 solve per requested z, stopping at +0.45 mN. */
   static void runForceLevelPrescanZ(String source,Path out,double z,PrintWriter w)throws Exception{
     final double alpha=-20.0,phi=90.0;
@@ -668,6 +685,7 @@ public class RunModelBLocalMeshConvergence {
       else if(a.length==4&&"alphaminus20z".equalsIgnoreCase(a[2])) runAlphaMinus20Z(a[0],out,Double.parseDouble(a[3]));
       else if(a.length==3&&"alphaminus20criticalprescan".equalsIgnoreCase(a[2])) runCriticalPrescanBatch(a[0],out);
       else if(a.length==7&&"alphaminus20criticalfull360".equalsIgnoreCase(a[2])) runCriticalFull360Batch(a[0],out,new double[]{Double.parseDouble(a[3]),Double.parseDouble(a[4]),Double.parseDouble(a[5]),Double.parseDouble(a[6])});
+      else if(a.length==3&&"alphaminus20z88full360".equalsIgnoreCase(a[2])) runAlphaMinus20Z88Full360Batch(a[0],out);
       else if(a.length>=5&&"alphaminus20forcelevelprescan".equalsIgnoreCase(a[2])){double[] zs=new double[a.length-4];for(int i=4;i<a.length;i++)zs[i-4]=Double.parseDouble(a[i]);runForceLevelPrescanBatch(a[0],out,Paths.get(a[3]),zs);}
       else if(a.length==6&&"alphaminus20forcelevelfull360".equalsIgnoreCase(a[2])) runForceLevelFull360Batch(a[0],out,new double[]{Double.parseDouble(a[3]),Double.parseDouble(a[4]),Double.parseDouble(a[5])});
       else if(a.length==3&&"alpha0full360".equalsIgnoreCase(a[2])) runFull360Batch(a[0],out,0.0,"modelB_alpha0_full360_phi.csv");
