@@ -449,6 +449,68 @@ public class RunModelBLocalMeshConvergence {
     for(double z:zs){Path zd=out.resolve("z"+f(z));Files.createDirectories(zd);log("FULL360_START alpha="+f(alpha)+" z="+f(z)+" phi=0:10:360 GEOM_MESH_REBUILD=true");runFull360Z(source,zd,z,alpha,fileName);}
     log("FULL360_BATCH_FINISH alpha="+f(alpha)+" out="+out);
   }
+  /** Alpha=-20 critical-zone phi=90 prescan used only to select final heights. */
+  static void runCriticalPrescanZ(String source,Path out,double z,PrintWriter w)throws Exception{
+    final double alpha=-20.0, phi=90.0;
+    String name="critical_prescan_alpha_minus20_z"+f(z)+"_"+System.nanoTime(); Model m=null;
+    try{
+      m=ModelUtil.load(name,source); cleanup(m); removeRotating(m);
+      m.param().set("x_sphere",f(X_SPHERE)+"[mm]"); m.param().set("x_gap",f(GAP)+"[mm]");
+      m.param().set("z_sphere",f(z)+"[mm]"); m.param().set("alpha",f(alpha)+"[deg]"); m.param().set("phi",f(phi)+"[deg]");
+      m.component("comp1").geom("geom1").run(); verifyDomains(m); capturePhysics(m); normalize(m); reference(m); poseAtX(m,X_SPHERE,z,phi); mesh(m,"LOCAL_M03",0.03);
+      int ne=m.component("comp1").mesh("mesh1").getNumElem(); double q=m.component("comp1").mesh("mesh1").getMinQuality();
+      steelOff(m); ballOff(m); poseAtX(m,X_SPHERE,z,phi); double[] b0=solve(m,"B0 critical prescan z="+f(z)+" phi=90");
+      steelOn(m); ballOff(m); poseAtX(m,X_SPHERE,z,phi); double[] b1=solve(m,"B1 critical prescan z="+f(z)+" phi=90");
+      steelOn(m); ballOn(m); poseAtX(m,X_SPHERE,z,phi); double[] b2=solve(m,"B2 critical prescan z="+f(z)+" phi=90");
+      String[] st=m.sol().tags(); int d=dof(m,st[st.length-1]);
+      double hold=b1[0]-b0[0], ball=b2[0]-b1[0], total=b2[0]-b0[0], fy=b2[1]-b0[1], fz=b2[2]-b0[2];
+      w.println(String.join(",",val(z),val(alpha),val(phi),val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(fy),val(fz),Integer.toString(ne),Integer.toString(d),val(q),"true",total>0?"POSITIVE":"NEGATIVE","SUCCESS")); w.flush();
+      log("CRITICAL_PRESCAN_RESULT alpha=-20 z="+f(z)+" phi=90 Fx_total="+f(total)+" Fx_hold="+f(hold)+" elements="+ne+" dof="+d+" status=SUCCESS");
+    } finally { try{if(m!=null)m.save(out.resolve("z"+f(z)+"_last_state.mph").toString());}catch(Throwable ignored){} try{ModelUtil.remove(name);}catch(Throwable ignored){} }
+  }
+  static void runCriticalPrescanBatch(String source,Path out)throws Exception{
+    double[] zs=new double[]{108,109,110,111,112,113,114,115,116}; Files.createDirectories(out);
+    Path csv=out.resolve("modelB_alpha_minus20_critical_phi90_prescan.csv");
+    try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv))){
+      w.println("z_sphere_mm,alpha_deg,phi_deg,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,release_candidate,status");
+      for(double z:zs){log("CRITICAL_PRESCAN_START alpha=-20 z="+f(z)+" phi=90"); runCriticalPrescanZ(source,out,z,w);}
+    }
+    log("CRITICAL_PRESCAN_FINISH alpha=-20 rows="+zs.length+" csv="+csv);
+  }
+  /** Alpha=-20 final critical full cycle: exactly 101 real COMSOL phases at 0:3.6:360 for each supplied z. */
+  static void runCriticalFull360Z(String source,Path out,double z,PrintWriter w,PrintWriter s)throws Exception{
+    final double alpha=-20.0; String name="critical_full360_alpha_minus20_z"+f(z)+"_"+System.nanoTime(); Model m=null;
+    try{
+      m=ModelUtil.load(name,source); cleanup(m); removeRotating(m);
+      m.param().set("x_sphere",f(X_SPHERE)+"[mm]"); m.param().set("x_gap",f(GAP)+"[mm]"); m.param().set("z_sphere",f(z)+"[mm]"); m.param().set("alpha",f(alpha)+"[deg]"); m.param().set("phi","0[deg]");
+      m.component("comp1").geom("geom1").run(); verifyDomains(m); capturePhysics(m); normalize(m); reference(m); poseAtX(m,X_SPHERE,z,0); mesh(m,"LOCAL_M03",0.03);
+      int ne=m.component("comp1").mesh("mesh1").getNumElem(); double q=m.component("comp1").mesh("mesh1").getMinQuality();
+      steelOff(m); ballOff(m); poseAtX(m,X_SPHERE,z,0); double[] b0=solve(m,"B0 critical full360 z="+f(z)); log("CRITICAL_B0_DONE z="+f(z));
+      steelOn(m); ballOff(m); poseAtX(m,X_SPHERE,z,0); double[] b1=solve(m,"B1 critical full360 z="+f(z)); log("CRITICAL_B1_DONE z="+f(z));
+      double hold=b1[0]-b0[0], fmax=-Double.MAX_VALUE, fmin=Double.MAX_VALUE, phiMax=Double.NaN, phiMin=Double.NaN; int positive=0,negative=0; String b2sol=null;
+      for(int i=0;i<=100;i++){
+        double phi=3.6*i; m.param().set("phi",f(phi)+"[deg]"); ballOn(m); poseAtX(m,X_SPHERE,z,phi);
+        String label="B2 critical full360 z="+f(z)+" phi="+f(phi); double[] b2;
+        if(b2sol==null)b2=solve(m,label); else {log("SOLVE_START "+label+" reuse_sol="+b2sol);m.sol(b2sol).runAll();log("SOLVE_DONE "+label+" reuse_sol="+b2sol);b2=new double[]{read(m,b2sol,FX)[0],read(m,b2sol,FY)[0],read(m,b2sol,FZ)[0]};}
+        if(b2sol==null){String[] st0=m.sol().tags();b2sol=st0[st0.length-1];}
+        String[] st=m.sol().tags(); int d=dof(m,b2sol); double ball=b2[0]-b1[0], total=b2[0]-b0[0], fy=b2[1]-b0[1], fz=b2[2]-b0[2];
+        if(total>fmax){fmax=total;phiMax=phi;} if(total<fmin){fmin=total;phiMin=phi;} if(total>0)positive++; if(total<0)negative++;
+        w.println(String.join(",",val(z),val(alpha),val(phi),val(b0[0]),val(b1[0]),val(b2[0]),val(hold),val(ball),val(total),val(fy),val(fz),Integer.toString(ne),Integer.toString(d),val(q),"true","SUCCESS")); w.flush();
+        log("CRITICAL_FULL360_RESULT alpha=-20 z="+f(z)+" phi="+f(phi)+" Fx_total="+f(total)+" Fmax_running="+f(fmax)+" phi_at_Fmax="+f(phiMax)+" status=SUCCESS");
+      }
+      s.println(String.join(",",val(z),val(alpha),val(fmax),val(phiMax),val(fmin),val(phiMin),Integer.toString(positive),Integer.toString(negative),Boolean.toString(fmax<0),Integer.toString(101),val(hold),Integer.toString(ne),Integer.toString(dof(m,b2sol)),val(q),"true","SUCCESS")); s.flush();
+      log("CRITICAL_FULL360_FINISH alpha=-20 z="+f(z)+" Fmin="+f(fmin)+" Fmax="+f(fmax)+" phi_at_Fmax="+f(phiMax)+" phase_points=101 status=SUCCESS");
+    } finally { try{if(m!=null)m.save(out.resolve("z"+f(z)+"_last_state.mph").toString());}catch(Throwable ignored){} try{ModelUtil.remove(name);}catch(Throwable ignored){} }
+  }
+  static void runCriticalFull360Batch(String source,Path out,double[] zs)throws Exception{
+    Files.createDirectories(out); Path csv=out.resolve("modelB_alpha_minus20_critical_full360.csv"), summary=out.resolve("modelB_alpha_minus20_critical_full360_summary.csv");
+    try(PrintWriter w=new PrintWriter(Files.newBufferedWriter(csv)); PrintWriter s=new PrintWriter(Files.newBufferedWriter(summary))){
+      w.println("z_sphere_mm,alpha_deg,phi_deg,Fx_B0_raw_mN,Fx_B1_raw_mN,Fx_B2_raw_mN,Fx_hold_corr_mN,DeltaFx_ball_mN,Fx_total_corr_mN,Fy_total_corr_mN,Fz_total_corr_mN,elements,DOF,min_quality,same_mesh_verified,status");
+      s.println("z_sphere_mm,alpha_deg,Fmax_mN,phi_at_Fmax_deg,Fmin_mN,phi_at_Fmin_deg,positive_phase_count,negative_phase_count,all_sampled_phi_negative,phase_points,Fx_hold_corr_mN,elements,DOF,min_quality,same_mesh_verified,status");
+      for(double z:zs){Path zd=out.resolve("z"+f(z));Files.createDirectories(zd);log("CRITICAL_FULL360_START alpha=-20 z="+f(z)+" phi=0:3.6:360");runCriticalFull360Z(source,zd,z,w,s);}
+    }
+    log("CRITICAL_FULL360_BATCH_FINISH alpha=-20 z_count="+zs.length+" phase_points=101 csv="+csv+" summary="+summary);
+  }
   /** Alpha=-20-only macro scan: one geometry/mesh and B0/B1 per height, then phi=0:30:360 with immediate CSV flush. */
   static void runAlphaMinus20Macro30Z(String source,Path out,double z,Path phiCsv,Path summaryCsv)throws Exception{
     final double alpha=-20.0; if(alpha!=-20.0)throw new IllegalStateException("WRONG_ALPHA_CONFIGURATION");
@@ -531,6 +593,8 @@ public class RunModelBLocalMeshConvergence {
       else if(a.length==3&&"alpha20refine".equalsIgnoreCase(a[2])) runAlpha20Refinement(a[0],out);
       else if(a.length==3&&"alphaminus20sparse".equalsIgnoreCase(a[2])) runAlphaMinus20Sparse(a[0],out);
       else if(a.length==4&&"alphaminus20z".equalsIgnoreCase(a[2])) runAlphaMinus20Z(a[0],out,Double.parseDouble(a[3]));
+      else if(a.length==3&&"alphaminus20criticalprescan".equalsIgnoreCase(a[2])) runCriticalPrescanBatch(a[0],out);
+      else if(a.length==7&&"alphaminus20criticalfull360".equalsIgnoreCase(a[2])) runCriticalFull360Batch(a[0],out,new double[]{Double.parseDouble(a[3]),Double.parseDouble(a[4]),Double.parseDouble(a[5]),Double.parseDouble(a[6])});
       else if(a.length==3&&"alpha0full360".equalsIgnoreCase(a[2])) runFull360Batch(a[0],out,0.0,"modelB_alpha0_full360_phi.csv");
       else if(a.length==3&&"alphaminus20full360".equalsIgnoreCase(a[2])) runFull360Batch(a[0],out,-20.0,"modelB_alpha_minus20_full360_phi.csv");
       else if(a.length==4&&"alpha0full360z".equalsIgnoreCase(a[2])) runFull360Z(a[0],out,Double.parseDouble(a[3]),0.0,"modelB_alpha0_full360_phi.csv");
