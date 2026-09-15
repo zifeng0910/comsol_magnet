@@ -50,9 +50,9 @@ function Show-ForceLevelState {
   $eventLine = if ($events) { $events.Line } else { '' }
   if ($mode -eq 'COMPLETED') { $eventLine = 'TASK_COMPLETED' }
   $stage = 'WAITING'; $z = ''; $phi = ''
-  if ($eventLine -match 'B0') { $stage = 'B0' }
-  if ($eventLine -match 'B1') { $stage = 'B1' }
-  if ($eventLine -match 'B2|FORCE_LEVEL_.*RESULT|SOLVE_START') { $stage = 'B2' }
+  if ($eventLine -match 'SOLVE_START B0|B0 force-level') { $stage = 'B0' }
+  elseif ($eventLine -match 'SOLVE_START B1|B1 force-level') { $stage = 'B1' }
+  elseif ($eventLine -match 'SOLVE_START B2|B2 force-level|FORCE_LEVEL_.*RESULT') { $stage = 'B2' }
   if ($eventLine -match 'MESH_DONE') { $stage = 'MESH' }
   if ($eventLine -match 'ERROR|FAIL') { $stage = 'ERROR' }
   if ($eventLine -match '(?:^|\s)z=([-+0-9.eE]+)') { $z = $Matches[1] }
@@ -68,7 +68,7 @@ function Show-ForceLevelState {
   $runningMax = if ($currentPeak) { $currentPeak.Fx_total_corr_mN } elseif ($latest) { $latest.Fx_total_corr_mN } else { '' }
   $peakPhi = if ($currentPeak) { $currentPeak.phi_deg } elseif ($latest -and $mode -eq 'PRESCAN') { $latest.phi_deg } else { '' }
   $hold = if ($currentPeak) { $currentPeak.Fx_hold_corr_mN } elseif ($latest) { $latest.Fx_hold_corr_mN } else { '' }
-  $phaseDone = if ($mode -eq 'FULL360') { $currentRows.Count } elseif ($latest) { 1 } else { 0 }
+  $phaseDone = if ($mode -eq 'FULL360') { $currentRows.Count } else { 0 }
   $stageAComplete = [math]::Min($prescan.Count, $PlannedScanZ)
   $stageBComplete = [math]::Min($summaries.Count, 3)
 
